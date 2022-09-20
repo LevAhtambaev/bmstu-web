@@ -1,0 +1,13 @@
+<html>
+    <h1>
+        {{ .title }}
+    </h1>
+
+     <table>
+     {{range .giftList}}
+       <tr>
+         <th>{{.Name}}</th>
+       </tr>
+     {{end}}
+     </table>
+</html>
