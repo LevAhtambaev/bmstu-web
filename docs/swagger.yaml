@@ -94,7 +94,7 @@ paths:
         in: query
         name: String
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:

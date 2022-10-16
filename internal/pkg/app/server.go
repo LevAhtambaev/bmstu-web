@@ -89,7 +89,7 @@ func (a *Application) GetManga(gCtx *gin.Context) {
 // @Tags         Change
 // @Produce      json
 // @Param UUID query string true "UUID манги"
-// @Param String query int true "Новое описание"
+// @Param String query string true "Новое описание"
 // @Success      200  {object}  models.ModelDescChanged
 // @Failure 	 500 {object} models.ModelError
 // @Router       /manga/changeDescription [put]

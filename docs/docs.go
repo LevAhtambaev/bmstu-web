@@ -68,7 +68,7 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "Новое описание",
                         "name": "String",
                         "in": "query",
