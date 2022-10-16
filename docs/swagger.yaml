@@ -1,0 +1,213 @@
+basePath: /
+definitions:
+  ds.Manga:
+    properties:
+      description:
+        type: string
+      episodes:
+        type: integer
+      genre:
+        type: string
+      name:
+        type: string
+      price:
+        type: integer
+      rate:
+        type: integer
+      uuid:
+        type: string
+      year:
+        type: integer
+    type: object
+  models.ModelDescChanged:
+    properties:
+      price:
+        type: boolean
+    type: object
+  models.ModelError:
+    properties:
+      description:
+        description: description
+        type: string
+      error:
+        description: error
+        type: string
+      type:
+        description: type
+        type: string
+    type: object
+  models.ModelMangaCreated:
+    properties:
+      success:
+        description: success
+        type: boolean
+    type: object
+  models.ModelMangaDeleted:
+    properties:
+      price:
+        type: boolean
+    type: object
+  models.ModelMangaDesc:
+    properties:
+      price:
+        type: string
+    type: object
+host: 127.0.0.1:8080
+info:
+  contact:
+    email: volohajks@inbox.ru
+    name: API Support
+    url: https://vk.com/vvjkee
+  description: Store of the best manga
+  license:
+    name: AS IS (NO WARRANTY)
+  title: Manga Store
+  version: "1.0"
+paths:
+  /manga/all:
+    get:
+      description: Get a list of all mangas
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ds.Manga'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ModelError'
+      summary: Get all records
+      tags:
+      - Info
+  /manga/changeDescription:
+    put:
+      description: Change a description of manga via its uuid
+      parameters:
+      - description: UUID манги
+        in: query
+        name: UUID
+        required: true
+        type: string
+      - description: Новое описание
+        in: query
+        name: String
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ModelDescChanged'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ModelError'
+      summary: Change manga description
+      tags:
+      - Change
+  /manga/create:
+    post:
+      description: Adding a new manga to database
+      parameters:
+      - description: Название манги
+        in: query
+        name: Name
+        required: true
+        type: string
+      - description: Рейтинг манги
+        in: query
+        name: Rate
+        required: true
+        type: integer
+      - description: Год производства
+        in: query
+        name: Year
+        required: true
+        type: integer
+      - description: Жанр
+        in: query
+        name: Genre
+        required: true
+        type: string
+      - description: Цена
+        in: query
+        name: Price
+        required: true
+        type: integer
+      - description: Количество серий
+        in: query
+        name: Episodes
+        required: true
+        type: integer
+      - description: Описание
+        in: query
+        name: Description
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.ModelMangaCreated'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ModelError'
+      summary: Add a new manga
+      tags:
+      - Add
+  /manga/delete:
+    delete:
+      description: Delete a manga via its uuid
+      parameters:
+      - description: UUID манги
+        in: query
+        name: UUID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ModelMangaDeleted'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ModelError'
+      summary: Delete a manga
+      tags:
+      - Change
+  /manga/find:
+    get:
+      description: Get a manga via name
+      parameters:
+      - description: Название манги
+        in: query
+        name: Name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ModelMangaDesc'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ModelError'
+      summary: Get manga with corresponding name
+      tags:
+      - Info
+schemes:
+- http
+- https
+swagger: "2.0"

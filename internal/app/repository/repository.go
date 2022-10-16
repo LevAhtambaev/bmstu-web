@@ -4,10 +4,9 @@ import (
 	"WAD-2022/internal/app/ds"
 	"WAD-2022/internal/app/dsn"
 	"context"
-	"github.com/tjarratt/babble"
+	"github.com/google/uuid"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"math/rand"
 )
 
 type Repository struct {
@@ -25,34 +24,46 @@ func New(ctx context.Context) (*Repository, error) {
 	}, nil
 }
 
-func (r *Repository) GetMangaByID(id uint) (*ds.Manga, error) {
-	product := &ds.Manga{}
-
-	err := r.db.First(product, "id = ?", "1").Error // find product with code D42
+func (r *Repository) GetAllManga() ([]ds.Manga, error) {
+	var manga []ds.Manga
+	result := r.db.Find(&manga)
+	err := result.Error
 	if err != nil {
-		return nil, err
+		return manga, err
 	}
-
-	return product, nil
+	return manga, err
 }
 
-func (r *Repository) NewRandManga() (*ds.Manga, error) {
-	babbler := babble.NewBabbler()
-	babbler.Count = 1
-	product := &ds.Manga{
-		uint(rand.Intn(5000)),
-		babbler.Babble(),
-		uint(rand.Intn(2000)),
-		babbler.Babble(),
-		uint(rand.Intn(2000)),
-	}
-	err := r.db.Create(product)
+func (r *Repository) GetMangaByName(name string) ([]ds.Manga, error) {
+	var manga []ds.Manga
+	result := r.db.Where("name = ?", name).Find(&manga)
+	err := result.Error
 	if err != nil {
-		return nil, err.Error
+		return manga, err
 	}
-	return product, nil
+	return manga, err
 }
 
-func (r *Repository) CreateManga(product ds.Manga) error {
-	return r.db.Create(product).Error
+func (r *Repository) CreateManga(manga ds.Manga) error {
+	err := r.db.Create(&manga).Error
+	return err
+}
+
+func (r *Repository) ChangeDescription(uuid uuid.UUID, desc string) error {
+	var manga ds.Manga
+	manga.UUID = uuid
+	result := r.db.Model(&manga).Update("Description", desc)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (r *Repository) DeleteManga(uuid string) error {
+	var manga ds.Manga
+	result := r.db.Delete(&manga, "uuid = ?", uuid)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
 }

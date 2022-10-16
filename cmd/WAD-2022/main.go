@@ -8,6 +8,18 @@ import (
 	"os"
 )
 
+// @title Manga Store
+// @version 1.0
+// @description Store of the best manga
+// @contact.name API Support
+// @contact.url https://vk.com/vvjkee
+// @contact.email volohajks@inbox.ru
+
+// @license.name AS IS (NO WARRANTY)
+
+// @host 127.0.0.1:8080
+// @schemes http https
+// @BasePath /
 func main() {
 	err := godotenv.Load(".env")
 	ctx := context.Background()
