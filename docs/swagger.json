@@ -67,7 +67,7 @@
                     {
                         "type": "string",
                         "description": "Новое описание",
-                        "name": "String",
+                        "name": "Description",
                         "in": "query",
                         "required": true
                     }
@@ -268,7 +268,7 @@
         "models.ModelDescChanged": {
             "type": "object",
             "properties": {
-                "price": {
+                "description": {
                     "type": "boolean"
                 }
             }
@@ -302,7 +302,7 @@
         "models.ModelMangaDeleted": {
             "type": "object",
             "properties": {
-                "price": {
+                "delete": {
                     "type": "boolean"
                 }
             }
@@ -310,7 +310,7 @@
         "models.ModelMangaDesc": {
             "type": "object",
             "properties": {
-                "price": {
+                "description": {
                     "type": "string"
                 }
             }

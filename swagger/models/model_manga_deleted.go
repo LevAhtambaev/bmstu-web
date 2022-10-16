@@ -1,5 +1,5 @@
 package models
 
 type ModelMangaDeleted struct {
-	Success bool `json:"price,omitempty"`
+	Success bool `json:"delete,omitempty"`
 }

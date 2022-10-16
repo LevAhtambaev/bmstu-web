@@ -1,5 +1,5 @@
 package models
 
 type ModelDescChanged struct {
-	Success bool `json:"price,omitempty"`
+	Success bool `json:"description,omitempty"`
 }

@@ -70,7 +70,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Новое описание",
-                        "name": "String",
+                        "name": "Description",
                         "in": "query",
                         "required": true
                     }
@@ -271,7 +271,7 @@ const docTemplate = `{
         "models.ModelDescChanged": {
             "type": "object",
             "properties": {
-                "price": {
+                "description": {
                     "type": "boolean"
                 }
             }
@@ -305,7 +305,7 @@ const docTemplate = `{
         "models.ModelMangaDeleted": {
             "type": "object",
             "properties": {
-                "price": {
+                "delete": {
                     "type": "boolean"
                 }
             }
@@ -313,7 +313,7 @@ const docTemplate = `{
         "models.ModelMangaDesc": {
             "type": "object",
             "properties": {
-                "price": {
+                "description": {
                     "type": "string"
                 }
             }
