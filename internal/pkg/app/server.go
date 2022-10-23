@@ -3,11 +3,12 @@ package app
 import (
 	"WAD-2022/internal/app/ds"
 	"WAD-2022/swagger/models"
+	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 	"log"
 	"net/http"
-	"strconv"
 )
 
 func (a *Application) StartServer() {
@@ -15,15 +16,15 @@ func (a *Application) StartServer() {
 
 	r := gin.Default()
 
-	r.GET("/manga/all", a.GetList)
+	r.GET("/manga/", a.GetList)
 
-	r.GET("/manga/find", a.GetManga)
+	r.GET("/manga/:uuid", a.GetManga)
 
-	r.POST("/manga/create", a.AddManga)
+	r.POST("/manga/", a.AddManga)
 
-	r.PUT("manga/changeDescription", a.ChangeDesc)
+	r.PUT("manga/:uuid", a.ChangeDesc)
 
-	r.DELETE("manga/delete", a.DeleteManga)
+	r.DELETE("manga/:uuid", a.DeleteManga)
 
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 
@@ -41,7 +42,7 @@ type inter struct {
 // @Produce      json
 // @Success      200  {object}  ds.Manga
 // @Failure 500 {object} models.ModelError
-// @Router       /manga/all [get]
+// @Router       /manga/ [get]
 func (a *Application) GetList(gCtx *gin.Context) {
 	resp, err := a.repo.GetAllManga()
 	if err != nil {
@@ -60,17 +61,25 @@ func (a *Application) GetList(gCtx *gin.Context) {
 
 // GetManga  godoc
 // @Summary      Get manga with corresponding name
-// @Description  Get a manga via name
+// @Description  Get a manga via uuid
 // @Tags         Info
 // @Produce      json
-// @Param Name query string true "Название манги"
+// @Param UUID query string true "UUID манги"
 // @Success      200  {object}  models.ModelMangaDesc
 // @Failure 	 500 {object} models.ModelError
-// @Router       /manga/find [get]
+// @Router       /manga/{uuid} [get]
 func (a *Application) GetManga(gCtx *gin.Context) {
-	name := gCtx.Query("Name")
-	resp, err := a.repo.GetMangaByName(name)
+	uuid := gCtx.Param("uuid")
+	resp, err := a.repo.GetMangaByName(uuid)
 	if err != nil {
+		if resp == nil {
+			gCtx.JSON(
+				http.StatusNotFound,
+				&models.ModelError{
+					Error: "not found",
+				})
+			return
+		}
 		gCtx.JSON(
 			http.StatusInternalServerError,
 			&models.ModelError{
@@ -92,16 +101,28 @@ func (a *Application) GetManga(gCtx *gin.Context) {
 // @Param Description query string true "Новое описание"
 // @Success      200  {object}  models.ModelDescChanged
 // @Failure 	 500 {object} models.ModelError
-// @Router       /manga/changeDescription [put]
+// @Router       /manga/{uuid} [put]
 func (a *Application) ChangeDesc(gCtx *gin.Context) {
-	inputUuid, _ := uuid.Parse(gCtx.Query("UUID"))
+	inputUuid, _ := uuid.Parse(gCtx.Param("uuid"))
 	newDesc := gCtx.Query("Description")
 	err := a.repo.ChangeDescription(inputUuid, newDesc)
+
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		gCtx.JSON(
+			http.StatusNotFound,
+			&models.ModelError{
+				Description: err.Error(),
+				Error:       "db error",
+				Type:        "internal",
+			})
+		return
+	}
+
 	if err != nil {
 		gCtx.JSON(
 			http.StatusInternalServerError,
 			&models.ModelError{
-				Description: "update failed",
+				Description: err.Error(),
 				Error:       "db error",
 				Type:        "internal",
 			})
@@ -123,11 +144,31 @@ func (a *Application) ChangeDesc(gCtx *gin.Context) {
 // @Param UUID query string true "UUID манги"
 // @Success      200  {object}  models.ModelMangaDeleted
 // @Failure 	 500 {object} models.ModelError
-// @Router       /manga/delete [delete]
+// @Router       /manga/{uuid} [delete]
 func (a *Application) DeleteManga(gCtx *gin.Context) {
-	uuid := gCtx.Query("UUID")
-	err := a.repo.DeleteManga(uuid)
+	uuid := gCtx.Param("uuid")
+	msg, err := a.repo.DeleteManga(uuid)
 	if err != nil {
+		if msg == "no manga" {
+			gCtx.JSON(
+				http.StatusBadRequest,
+				&models.ModelError{
+					Description: "No product found with this uuid",
+					Error:       "uuid error",
+					Type:        "client",
+				})
+			return
+		}
+		if msg == "no such rows" {
+			gCtx.JSON(
+				http.StatusBadRequest,
+				&models.ModelError{
+					Description: msg,
+					Error:       "uuid error",
+					Type:        "client",
+				})
+			return
+		}
 		gCtx.JSON(
 			http.StatusInternalServerError,
 			&models.ModelError{
@@ -150,40 +191,45 @@ func (a *Application) DeleteManga(gCtx *gin.Context) {
 // @Description  Adding a new manga to database
 // @Tags         Add
 // @Produce      json
-// @Param Name query string true "Название манги"
-// @Param Rate query uint64 true "Рейтинг манги"
-// @Param Year query uint64 true "Год производства"
-// @Param Genre query string true "Жанр"
-// @Param Price query uint64 true "Цена"
-// @Param Episodes query uint64 true "Количество серий"
-// @Param Description query string false "Описание"
+// @Param Name body string true "Название манги"
+// @Param Rate body uint64 true "Рейтинг манги"
+// @Param Year body uint64 true "Год производства"
+// @Param Genre body string true "Жанр"
+// @Param Price body uint64 true "Цена"
+// @Param Episodes body uint64 true "Количество серий"
+// @Param Description body string false "Описание"
 // @Success      201  {object}  models.ModelMangaCreated
 // @Failure 500 {object} models.ModelError
-// @Router       /manga/create [Post]
+// @Router       /manga/ [Post]
 func (a *Application) AddManga(gCtx *gin.Context) {
-	rate, _ := strconv.ParseUint(gCtx.Query("Rate"), 10, 64)
-	year, _ := strconv.ParseUint(gCtx.Query("Year"), 10, 64)
-	price, _ := strconv.ParseUint(gCtx.Query("Price"), 10, 64)
-	ep, _ := strconv.ParseUint(gCtx.Query("Episodes"), 10, 64)
+	manga := ds.Manga{}
 
-	manga := ds.Manga{
-		Name:        gCtx.Query("Name"),
-		Rate:        rate,
-		Year:        year,
-		Genre:       gCtx.Query("Genre"),
-		Price:       price,
-		Episodes:    ep,
-		Description: gCtx.Query("Description"),
-	}
-
-	err := a.repo.CreateManga(manga)
-	if err != nil {
+	if err := gCtx.BindJSON(&manga); err != nil {
 		gCtx.JSON(
 			http.StatusInternalServerError,
 			&models.ModelError{
-				Description: "adding failed",
+				Description: "unmarshal failed",
 				Error:       "db error",
 				Type:        "internal",
+			})
+		return
+	}
+	if manga.Price < 0 || manga.Year < 0 || manga.Rate < 1 {
+		gCtx.JSON(
+			http.StatusBadRequest,
+			&models.ModelError{
+				Description: "Write correct data",
+				Error:       "Price error",
+			})
+		return
+	}
+	manga.UUID = uuid.New()
+	err := a.repo.CreateManga(manga)
+	if err != nil {
+		gCtx.JSON(
+			http.StatusBadRequest,
+			&models.ModelError{
+				Description: "Bad Request",
 			})
 		return
 	}
@@ -192,5 +238,4 @@ func (a *Application) AddManga(gCtx *gin.Context) {
 		&models.ModelMangaCreated{
 			Success: true,
 		})
-
 }

@@ -23,7 +23,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/manga/all": {
+        "/manga/": {
             "get": {
                 "description": "Get a list of all mangas",
                 "produces": [
@@ -47,9 +47,130 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "post": {
+                "description": "Adding a new manga to database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Add"
+                ],
+                "summary": "Add a new manga",
+                "parameters": [
+                    {
+                        "description": "Название манги",
+                        "name": "Name",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Рейтинг манги",
+                        "name": "Rate",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Год производства",
+                        "name": "Year",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Жанр",
+                        "name": "Genre",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Цена",
+                        "name": "Price",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Количество серий",
+                        "name": "Episodes",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Описание",
+                        "name": "Description",
+                        "in": "body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.ModelMangaCreated"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ModelError"
+                        }
+                    }
+                }
             }
         },
-        "/manga/changeDescription": {
+        "/manga/{uuid}": {
+            "get": {
+                "description": "Get a manga via uuid",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Info"
+                ],
+                "summary": "Get manga with corresponding name",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "UUID манги",
+                        "name": "UUID",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ModelMangaDesc"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ModelError"
+                        }
+                    }
+                }
+            },
             "put": {
                 "description": "Change a description of manga via its uuid",
                 "produces": [
@@ -89,85 +210,7 @@ const docTemplate = `{
                         }
                     }
                 }
-            }
-        },
-        "/manga/create": {
-            "post": {
-                "description": "Adding a new manga to database",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Add"
-                ],
-                "summary": "Add a new manga",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Название манги",
-                        "name": "Name",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Рейтинг манги",
-                        "name": "Rate",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Год производства",
-                        "name": "Year",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Жанр",
-                        "name": "Genre",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Цена",
-                        "name": "Price",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Количество серий",
-                        "name": "Episodes",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Описание",
-                        "name": "Description",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/models.ModelMangaCreated"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.ModelError"
-                        }
-                    }
-                }
-            }
-        },
-        "/manga/delete": {
+            },
             "delete": {
                 "description": "Delete a manga via its uuid",
                 "produces": [
@@ -191,41 +234,6 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/models.ModelMangaDeleted"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.ModelError"
-                        }
-                    }
-                }
-            }
-        },
-        "/manga/find": {
-            "get": {
-                "description": "Get a manga via name",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Info"
-                ],
-                "summary": "Get manga with corresponding name",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Название манги",
-                        "name": "Name",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.ModelMangaDesc"
                         }
                     },
                     "500": {

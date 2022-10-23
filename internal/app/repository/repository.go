@@ -5,6 +5,7 @@ import (
 	"WAD-2022/internal/app/dsn"
 	"context"
 	"github.com/google/uuid"
+	log "github.com/sirupsen/logrus"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -34,12 +35,12 @@ func (r *Repository) GetAllManga() ([]ds.Manga, error) {
 	return manga, err
 }
 
-func (r *Repository) GetMangaByName(name string) ([]ds.Manga, error) {
+func (r *Repository) GetMangaByName(uuid string) ([]ds.Manga, error) {
 	var manga []ds.Manga
-	result := r.db.Where("name = ?", name).Find(&manga)
+	result := r.db.First(&manga, "uuid = ?", uuid)
 	err := result.Error
 	if err != nil {
-		return manga, err
+		return nil, err
 	}
 	return manga, err
 }
@@ -59,11 +60,16 @@ func (r *Repository) ChangeDescription(uuid uuid.UUID, desc string) error {
 	return nil
 }
 
-func (r *Repository) DeleteManga(uuid string) error {
+func (r *Repository) DeleteManga(uuid string) (string, error) {
 	var manga ds.Manga
-	result := r.db.Delete(&manga, "uuid = ?", uuid)
-	if result.Error != nil {
-		return result.Error
+	res := r.db.First(&manga, "uuid = ?", uuid)
+	if res.Error != nil {
+		return "no such rows", res.Error
 	}
-	return nil
+	result := r.db.Delete(&manga, "uuid = ?", uuid)
+	log.Print(result.Error)
+	if result.Error != nil {
+		return "no manga", result.Error
+	}
+	return uuid, result.Error
 }
