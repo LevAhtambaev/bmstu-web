@@ -9,7 +9,7 @@ export function Manga(props: MangaProps) {
     const [showDetails, setShowDetails] = useState<boolean>(false)
     return (
         <div
-        className="border py-2 px-4 rounded flex flex-col items-center mb-2"
+        className="border w-1/2 py-0 px-0 rounded flex flex-col justify-between items-center mb-2 place-content-start"
         >
             <img src={process.env.PUBLIC_URL + props.manga.image} className="w-1/5" alt={props.manga.title}/>
             <p>{ props.manga.title }</p>

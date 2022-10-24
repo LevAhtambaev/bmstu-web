@@ -1,16 +1,20 @@
 import React from 'react';
-import {Manga} from './components/Manga'
-import {Mangas} from './repository/Mangas'
+import {Routes, Route, Link, BrowserRouter} from 'react-router-dom'
+import {Navbar} from "./components/Navbar";
+import {HomePage} from "./components/HomePage";
+import {Info} from "./components/Info";
 
 
 function App() {
     return (
-        <div className="container mx-auto max-w-2xl pt-5">
-            {Mangas.map((manga, key) => {
-                return <Manga manga={manga} key={key}/>
-            })}
-        </div>
-    )
+        <BrowserRouter basename="/">
+            <Navbar/>
+            <Routes>
+                <Route path="/" element={<HomePage/>}/>
+                <Route path="/info" element={<Info/>}/>
+            </Routes>
+        </BrowserRouter>
+)
 }
 
 export default App;
