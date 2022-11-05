@@ -4,7 +4,7 @@ export function MangaDescription() {
     return (
         <div>
             <p className="ml-4 text-2xl font-normal text-black">
-                <Link to="/manga">Mangas</Link>  / {useLocation().state.manga.Name}
+                <Link to="/manga">Mangas</Link> / {useLocation().state.manga.Name}
             </p>
 
             <img src={`https://res.cloudinary.com/dsd9ne1xr/image/upload/${useLocation().state.manga.Image}/${useLocation().state.manga.UUID}.jpg`} width="23%" height="70%" className="mx-auto rounded-2xl" alt="manga"/>
