@@ -11,10 +11,26 @@ import (
 	"net/http"
 )
 
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
+}
+
 func (a *Application) StartServer() {
 	log.Println("Server start up")
 
 	r := gin.Default()
+
+	r.Use(CORSMiddleware())
 
 	r.GET("/manga/", a.GetList)
 
@@ -56,7 +72,6 @@ func (a *Application) GetList(gCtx *gin.Context) {
 		return
 	}
 	gCtx.JSON(http.StatusOK, resp)
-
 }
 
 // GetManga  godoc
