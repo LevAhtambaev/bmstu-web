@@ -1,7 +1,11 @@
 export interface IManga {
-    id: number
-    title: string
-    price: number
-    image: string
-    description: string
+    UUID: string
+    Name: string
+    Rate: number
+    Year: number
+    Genre: string
+    Price: number
+    Episodes: number
+    Description: string
+    Image: string
 }

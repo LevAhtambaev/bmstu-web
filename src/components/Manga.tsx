@@ -1,29 +1,25 @@
-import {IManga} from '../models'
-import {useState} from "react";
+import {IManga} from "../models";
+import {Link} from "react-router-dom";
 
-interface MangaProps {
+
+export interface MangaProps {
     manga: IManga
 }
 
 export function Manga(props: MangaProps) {
-    const [showDetails, setShowDetails] = useState<boolean>(false)
     return (
         <div
-        className="border w-1/2 py-0 px-0 rounded flex flex-col justify-between items-center mb-2 place-content-start"
+            className="py-3 px-0 rounded flex flex-col justify-self-center items-center mb-2 place-content-start"
         >
-            <img src={process.env.PUBLIC_URL + props.manga.image} className="w-1/5" alt={props.manga.title}/>
-            <p>{ props.manga.title }</p>
-            <p className="font-bold">{props.manga.price} рублей</p>
-            <button
-                className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-                onClick={() => setShowDetails((prevState) => !prevState)}
+            <img src={`https://res.cloudinary.com/dsd9ne1xr/image/upload/${props.manga.Image}/${props.manga.UUID}.jpg`} className="w-1/5" alt={props.manga.Name}/>
+            <p>{ props.manga.Name }</p>
+            <p className="font-bold">{props.manga.Price} рублей</p>
+            <Link to={`${props.manga.UUID}`}
+                  className="w-1/10 border-4 border-indigo-700 text-indigo-700 hover:bg-blue-700 hover:text-white py-1 px-3 place-self-center rounded-full text-xl font-bold"
+                  state={{manga: props.manga}}
             >
-                {!showDetails ? <div>Show Details</div> : <div>Hide Details</div>}
-            </button>
-
-            {showDetails && <div>
-                <p>{props.manga.description}</p>
-            </div>}
+                Подробнее
+            </Link>
         </div>
     )
 }
