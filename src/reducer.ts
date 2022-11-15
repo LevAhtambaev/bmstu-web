@@ -1,5 +1,12 @@
-import {IManga} from "./models";
+export const success = "Successs"
 
-export default function(state : IManga[], action: any) {
-    return state
+export function reducer(state : any, action: { type: any; mangas: any; }) {
+    switch (action.type) {
+        case success:
+            return {
+                mangas: action.mangas
+            }
+        default:
+            return state
+    }
 }
