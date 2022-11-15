@@ -32,11 +32,11 @@ func (a *Application) StartServer() {
 
 	r.Use(CORSMiddleware())
 
-	r.GET("/manga/", a.GetList)
+	r.GET("/manga", a.GetList)
 
 	r.GET("/manga/:uuid", a.GetManga)
 
-	r.POST("/manga/", a.AddManga)
+	r.POST("/manga", a.AddManga)
 
 	r.PUT("manga/:uuid", a.ChangeDesc)
 
