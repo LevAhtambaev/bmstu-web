@@ -33,14 +33,15 @@ export function MangaPage() {
         getJson(url).then((result) => {
             dispatch({type: success, mangas: result})
         })
-    })
+    }, [url])
 
     return (
         <>
             <Banner/>
             <form className="form--manga">
                 <label>
-                    <input className="shadow ml-2 appearance-none border rounded w-1/8 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="search" type="text" placeholder="Search" />
+                    <input className="shadow ml-2 appearance-none border rounded w-1/8 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="search" type="text" placeholder="Search"/>
+                    <button className="ml-2">Find</button>
                 </label>
             </form>
             <button className="bg-white ml-1 hover:bg-gray-100 text-gray-800 ml-72 py-1.5 px-2 border rounded shadow" onClick={()=>{

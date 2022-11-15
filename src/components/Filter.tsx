@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 
 export function Filter() {
     return (
-        <div className="bg-blend-color-burn">
+        <div className="ml-10 bg-blend-color-burn">
             <Box sx={{ width: 300 }}>
                 <Slider
                     aria-label="Price filter"
