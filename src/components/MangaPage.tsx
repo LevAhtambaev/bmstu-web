@@ -1,26 +1,17 @@
 import {Manga} from "./Manga";
 import {Banner} from "./Banner";
-import {getJson} from "../modules";
+import {getJsonMangas} from "../modules";
 import {useEffect, useState, useReducer} from "react";
 import {createContext} from "react";
 import {IManga} from "../models";
 import {reducer, success} from "../reducer";
 import {Filter} from "./Filter";
+import {GetMangas} from "../requests/GetMangas";
+import {manga_context} from "../context/context";
 
-let dv : IManga = {
-    UUID: "",
-    Image: "",
-    Year: 0,
-    Name: "",
-    Genre: "",
-    Description: "",
-    Episodes: 0,
-    Rate: 1,
-    Price: 0,
-}
 
+export const MyContext = createContext(manga_context);
 const initialState = {mangas: []}
-export const MyContext = createContext(dv);
 
 export function MangaPage() {
     const [state, dispatch] = useReducer(reducer, initialState)
@@ -30,7 +21,7 @@ export function MangaPage() {
     const url = `manga`
 
     useEffect(() => {
-        getJson(url).then((result) => {
+        getJsonMangas(url).then((result) => {
             dispatch({type: success, mangas: result})
         })
     }, [url])
@@ -49,7 +40,7 @@ export function MangaPage() {
             }}>Filter</button>
             {showFilter && <Filter/>}
             <div className="container grid grid-cols-3 gap-2">
-                {state.mangas.map((manga: IManga)=> {
+                {GetMangas().map((manga: IManga)=> {
                     return (
                         <MyContext.Provider value={manga}>
                             <Manga/>

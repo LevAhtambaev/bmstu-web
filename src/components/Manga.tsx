@@ -2,6 +2,7 @@ import {IManga} from "../models";
 import {Link} from "react-router-dom";
 import {useContext} from "react";
 import {MyContext} from "./MangaPage";
+import {AddToCart} from "../requests/AddToCart";
 
 
 export interface MangaProps {
@@ -23,6 +24,9 @@ export function Manga() {
             >
                 Подробнее
             </Link>
+            <p className="place-self-center col-span-3 rounded-full bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                {AddToCart(ctx.UUID)}
+            </p>
         </div>
     )
 }

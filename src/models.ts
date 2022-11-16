@@ -9,3 +9,8 @@ export interface IManga {
     Description: string
     Image: string
 }
+
+export interface ICart {
+    UUID: string
+    Manga: string
+}
