@@ -6,6 +6,8 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"gorm.io/gorm"
 	"log"
 	"net/http"
@@ -14,6 +16,7 @@ import (
 func CORSMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
 
 		if c.Request.Method == "OPTIONS" {
@@ -33,14 +36,20 @@ func (a *Application) StartServer() {
 	r.Use(CORSMiddleware())
 
 	r.GET("/manga", a.GetList)
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	r.GET("/cart", a.GetCart)
+
+	//r.GET("/manga/price/:uuid", a.GetMangaPrice)
 
 	r.GET("/manga/:uuid", a.GetManga)
 
 	r.POST("/manga", a.AddManga)
+	r.POST("/cart", a.AddToCart)
 
 	r.PUT("manga/:uuid", a.ChangeDesc)
 
 	r.DELETE("manga/:uuid", a.DeleteManga)
+	r.DELETE("/cart/:uuid", a.DeleteFromCart)
 
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 
@@ -86,15 +95,15 @@ func (a *Application) GetList(gCtx *gin.Context) {
 func (a *Application) GetManga(gCtx *gin.Context) {
 	uuid := gCtx.Param("uuid")
 	resp, err := a.repo.GetMangaByName(uuid)
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		gCtx.JSON(
+			http.StatusNotFound,
+			&models.ModelError{
+				Error: "not found",
+			})
+		return
+	}
 	if err != nil {
-		if resp == nil {
-			gCtx.JSON(
-				http.StatusNotFound,
-				&models.ModelError{
-					Error: "not found",
-				})
-			return
-		}
 		gCtx.JSON(
 			http.StatusInternalServerError,
 			&models.ModelError{
@@ -253,4 +262,104 @@ func (a *Application) AddManga(gCtx *gin.Context) {
 		&models.ModelMangaCreated{
 			Success: true,
 		})
+}
+
+func (a *Application) AddToCart(gCtx *gin.Context) {
+	cart := ds.Cart{}
+	err := gCtx.BindJSON(&cart)
+	if err != nil {
+		gCtx.JSON(
+			http.StatusBadRequest,
+			&models.ModelError{
+				Description: "Invalid parameters",
+				Error:       "Bad request",
+			})
+		return
+	}
+	err = a.repo.AddToCart(cart)
+	if err != nil {
+		gCtx.JSON(
+			http.StatusInternalServerError,
+			&models.ModelError{
+				Description: "Create failed",
+				Error:       "Internal",
+			})
+		return
+	}
+	gCtx.JSON(
+		http.StatusOK,
+		&models.ModelCartCreated{
+			Success: true,
+		})
+
+}
+
+func (a *Application) DeleteFromCart(gCtx *gin.Context) {
+	UUID, err := uuid.Parse(gCtx.Param("uuid"))
+	if err != nil {
+		gCtx.JSON(
+			http.StatusBadRequest,
+			&models.ModelError{
+				Description: "Invalid UUID format",
+				Error:       "Bad request",
+			})
+		return
+	}
+	resp, err := a.repo.DeleteFromCart(UUID)
+	if err != nil {
+		if resp == 404 {
+			gCtx.JSON(
+				http.StatusNotFound,
+				&models.ModelError{
+					Description: "UUID Not Found",
+					Error:       "Bad request",
+				})
+			return
+		} else {
+			gCtx.JSON(
+				http.StatusInternalServerError,
+				&models.ModelError{
+					Description: "Delete failed",
+					Error:       "Internal",
+				})
+			return
+		}
+	}
+	gCtx.JSON(
+		http.StatusOK,
+		&models.ModelCartDeleted{
+			Success: true,
+		})
+
+}
+
+func (a *Application) GetCar(gCtx *gin.Context) {
+	UUID, err := uuid.Parse(gCtx.Param("uuid"))
+	resp, err := a.repo.GetCar(UUID)
+	if err != nil {
+		gCtx.JSON(
+			http.StatusInternalServerError,
+			&models.ModelError{
+				Description: "Can't get a manga",
+				Error:       "Internal",
+			})
+		return
+	}
+
+	gCtx.JSON(http.StatusOK, resp)
+}
+
+func (a *Application) GetCart(gCtx *gin.Context) {
+	resp, err := a.repo.GetCart()
+	if err != nil {
+		gCtx.JSON(
+			http.StatusInternalServerError,
+			&models.ModelError{
+				Description: "can`t get a list",
+				Error:       "Internal",
+			})
+		return
+	}
+	gCtx.JSON(http.StatusOK, resp)
+
 }
