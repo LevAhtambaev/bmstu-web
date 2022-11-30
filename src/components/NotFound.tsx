@@ -5,7 +5,7 @@ export function NotFound(){
     return (
         <div>
             <Navbar/>
-            <h1>404 Not Found</h1>
+            <h1>403 Forbidden</h1>
         </div>
     )
 }

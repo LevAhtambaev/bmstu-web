@@ -8,7 +8,8 @@ import {MangaPage} from "./components/MangaPage";
 import {CartPage} from "./components/CartPage";
 import {Registration} from "./components/RegisterPage";
 import {LoginPage} from "./components/LoginPage";
-import {useCookies} from "react-cookie";
+import {ProfilePage} from "./components/ProfilePage";
+
 
 
 
@@ -23,9 +24,10 @@ function App() {
                 <Route path="/manga/:id" element={<MangaDescription/>}></Route>
                 <Route path="/cart"element={<CartPage/>}></Route>
                 <Route path="/info" element={<Info/>}/>
-                <Route path="*" element={<NotFound/>}></Route>
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="/registration" element={<Registration/>}/>
+                <Route path="/profile/:id" element={<ProfilePage/>}></Route>
+                <Route path="/error" element={<NotFound/>}/>
             </Routes>
         </div>
     )

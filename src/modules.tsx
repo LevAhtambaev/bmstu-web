@@ -15,8 +15,14 @@ export const getJsonManga = async (url: string) => {
 }
 
 export const getJsonCart = async (url: string) => {
-    const res = await fetch(`${ENDPOINT}/${url}`).then((r) => r.json() as Promise<ICart[]>)
-    return res
+    let access_token = document.cookie.replace("access_token=", "")
+    return axios.get(`${ENDPOINT}/${url}`, {withCredentials: true, headers: {
+            "Authorization": `Bearer ${access_token}`
+        }}).then(function (r) {
+        return r.data
+    }).catch((error)=>{
+        window.location.replace("/error")
+    })
 }
 
 export const deleteCart = async (url: string) => {
@@ -61,6 +67,7 @@ export function logoutUser (url: string) {
             "Authorization": `Bearer ${access_token}`
         }}).then(function (r) {
             console.log(r.data)
-        window.location.replace("/login")
+        window.location.replace("/manga")
     })
 }
+

@@ -11,6 +11,11 @@ export interface MangaProps {
 
 export function Manga() {
     const ctx = useContext(MyContext)
+    const token = document.cookie.replace("access_token=","")
+    let showAddCartButton = true
+    if (token == "") {
+        showAddCartButton = false
+    }
     return (
         <div
             className="py-3 px-0 rounded flex flex-col justify-self-center items-center mb-2 place-content-start"
@@ -24,9 +29,9 @@ export function Manga() {
             >
                 Подробнее
             </Link>
-            <p className="place-self-center col-span-3 rounded-full bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+            {showAddCartButton && <p className="place-self-center col-span-3 rounded-full bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
                 {AddToCart(ctx.UUID)}
-            </p>
+            </p>}
         </div>
     )
 }
