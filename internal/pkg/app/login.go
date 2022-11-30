@@ -102,6 +102,17 @@ type registerResp struct {
 	Ok bool `json:"ok"`
 }
 
+func (a *Application) GetUser(gCtx *gin.Context) {
+	jwtStr := gCtx.GetHeader("Authorization")
+	if !strings.HasPrefix(jwtStr, jwtPrefix) { // если нет префикса то нас дурят!
+		gCtx.AbortWithStatus(http.StatusBadRequest) // отдаем что нет доступа
+
+		return // завершаем обработку
+	}
+	// отрезаем префикс
+	jwtStr = jwtStr[len(jwtPrefix):]
+}
+
 func (a *Application) Register(gCtx *gin.Context) {
 	req := &registerReq{}
 

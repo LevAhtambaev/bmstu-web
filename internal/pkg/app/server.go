@@ -39,7 +39,7 @@ func (a *Application) StartServer() {
 
 	r.GET("/manga", a.GetList)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	r.GET("/cart", a.GetCart)
+
 	r.GET("/logout", a.Logout)
 
 	//r.GET("/manga/price/:uuid", a.GetMangaPrice)
@@ -56,15 +56,11 @@ func (a *Application) StartServer() {
 	r.DELETE("/manga/:uuid", a.DeleteManga)
 	r.DELETE("/cart/:uuid", a.DeleteFromCart)
 
-	r.Use(a.WithAuthCheck(role.Manager, role.Admin)).GET("/ping", a.Ping)
+	r.Use(a.WithAuthCheck(role.Buyer)).GET("/cart", a.GetCart)
 
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 
 	log.Println("Server down")
-}
-
-type inter struct {
-	Status string `json:"status"`
 }
 
 // GetList godoc

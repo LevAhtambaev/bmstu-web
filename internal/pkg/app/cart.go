@@ -89,5 +89,4 @@ func (a *Application) GetCart(gCtx *gin.Context) {
 		return
 	}
 	gCtx.JSON(http.StatusOK, resp)
-
 }
