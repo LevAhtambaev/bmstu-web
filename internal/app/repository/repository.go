@@ -2,8 +2,6 @@ package repository
 
 import (
 	"WAD-2022/internal/app/ds"
-	"WAD-2022/internal/app/dsn"
-	"context"
 	"github.com/google/uuid"
 	log "github.com/sirupsen/logrus"
 	"gorm.io/driver/postgres"
@@ -14,8 +12,8 @@ type Repository struct {
 	db *gorm.DB
 }
 
-func New(ctx context.Context) (*Repository, error) {
-	db, err := gorm.Open(postgres.Open(dsn.FromEnv()), &gorm.Config{})
+func New(dsn string) (*Repository, error) {
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return nil, err
 	}
@@ -40,12 +38,6 @@ func (r *Repository) GetMangaByName(uuid string) (ds.Manga, error) {
 	result := r.db.First(&manga, "uuid = ?", uuid)
 	err := result.Error
 	return manga, err
-}
-
-func (r *Repository) GetCar(uuid uuid.UUID) (ds.Manga, error) {
-	var car ds.Manga
-	err := r.db.First(&car, uuid).Error
-	return car, err
 }
 
 func (r *Repository) CreateManga(manga ds.Manga) error {
@@ -98,4 +90,19 @@ func (r *Repository) DeleteFromCart(manga uuid.UUID) (int, error) {
 		return 500, err
 	}
 	return 0, nil
+}
+
+func (r *Repository) Register(user *ds.User) error {
+	return r.db.Create(user).Error
+}
+
+func (r *Repository) GetUserByLogin(login string) (*ds.User, error) {
+	user := &ds.User{}
+
+	err := r.db.First(&user, "name = ?", login).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
 }

@@ -27,14 +27,14 @@ func main() {
 
 	application, err := app.New(ctx)
 	if err != nil {
-		log.WithContext(ctx).WithError(err).Error("can`t create application")
+		log.Printf("cant create application: %s", err)
 
 		os.Exit(2)
 	}
 
-	err = application.Run(ctx)
+	err = application.Run()
 	if err != nil {
-		log.WithContext(ctx).WithError(err).Error("can`t run application")
+		log.Printf("can`t run application: %s", err)
 
 		os.Exit(2)
 	}
