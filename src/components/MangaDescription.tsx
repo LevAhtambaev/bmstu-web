@@ -1,8 +1,11 @@
 import {useLocation, Link} from "react-router-dom";
+import {Navbar} from "./Navbar";
+import React from "react";
 
 export function MangaDescription() {
     return (
         <div>
+            <Navbar/>
             <p className="ml-4 text-2xl font-normal text-black">
                 <Link to="/manga">Mangas</Link> / {useLocation().state.manga.Name}
             </p>

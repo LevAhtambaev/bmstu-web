@@ -1,4 +1,4 @@
-import { deleteCart} from "../modules";
+import {deleteCart} from "../modules";
 
 
 export function DeleteFromCart(uuid: string) {
@@ -12,8 +12,10 @@ export function DeleteFromCart(uuid: string) {
 
     return (
         <>
+
             <button onClick={() => Delete()}>Удалить из корзины</button>
-        </>
+
+            </>
     );
 
 }

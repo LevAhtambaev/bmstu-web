@@ -14,3 +14,4 @@ export interface ICart {
     UUID: string
     Manga: string
 }
+

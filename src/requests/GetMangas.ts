@@ -17,7 +17,7 @@ function reducer(state: any, action: { type: any; mangas: any; }) {
 
 export function GetMangas() {
     const [state, dispatch] = useReducer(reducer, initialState)
-    const url = `mangas`
+    const url = `manga`
 
     useEffect(() => {
         getJsonMangas(url).then((result) => {

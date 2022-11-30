@@ -1,12 +1,15 @@
 import React from 'react';
 import {Routes, Route} from 'react-router-dom'
-import {Navbar} from "./components/Navbar";
 import {Info} from "./components/Info";
 import {NotFound} from "./components/NotFound";
 import {MangaDescription} from "./components/MangaDescription";
 import {MainPage} from "./components/MainPage";
 import {MangaPage} from "./components/MangaPage";
 import {CartPage} from "./components/CartPage";
+import {Registration} from "./components/RegisterPage";
+import {LoginPage} from "./components/LoginPage";
+import {useCookies} from "react-cookie";
+
 
 
 export const ENDPOINT = "http://localhost:8080"
@@ -14,7 +17,6 @@ export const ENDPOINT = "http://localhost:8080"
 function App() {
     return (
         <div>
-            <Navbar/>
             <Routes>
                 <Route path="/homepage" element={<MainPage/>}> </Route>
                 <Route path="/manga" element={<MangaPage/>}></Route>
@@ -22,7 +24,8 @@ function App() {
                 <Route path="/cart"element={<CartPage/>}></Route>
                 <Route path="/info" element={<Info/>}/>
                 <Route path="*" element={<NotFound/>}></Route>
-                <Route path="/cart" element={<CartPage/>}/>
+                <Route path="/login" element={<LoginPage/>}/>
+                <Route path="/registration" element={<Registration/>}/>
             </Routes>
         </div>
     )
