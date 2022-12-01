@@ -13,7 +13,7 @@ export function DeleteFromCart(uuid: string) {
     return (
         <>
 
-            <button onClick={() => Delete()}>Удалить из корзины</button>
+            <button onClick={() => Delete()}>Удалить</button>
 
             </>
     );

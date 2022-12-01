@@ -9,6 +9,11 @@ import {Navbar} from "./Navbar";
 export const MyContext = createContext(cart_context);
 
 export function CartPage() {
+    let cart = GetCart()
+    let showCart = true
+    if (cart.length === 0) {
+        showCart = false
+    }
     return (
         <>
             <Navbar/>
@@ -17,14 +22,14 @@ export function CartPage() {
                 <p className="ml-4 text-2xl font-normal text-black">
                     Cars
                 </p>
-
-                {GetCart().map((cart: ICart) => {
+                {showCart && cart.map((cart: ICart) => {
                     return (
                         <MyContext.Provider value={cart}>
                             <Cart/>
                         </MyContext.Provider>
                     )
                 })}
+                {!showCart && <h1>Ваша корзина пуста!</h1>}
             </div>
         </div>
             </>

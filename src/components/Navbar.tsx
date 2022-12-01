@@ -1,7 +1,7 @@
 import {Fragment, useState} from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import {NavLink} from "react-router-dom";
-import {logoutUser} from "../modules";
+import {checkToken, logoutUser} from "../modules";
 
 
 function classNames(...classes: string[]) {
@@ -10,9 +10,8 @@ function classNames(...classes: string[]) {
 
 
 export  function Navbar() {
-    const empty = ''
-    const auth = document.cookie.replace("access_token=","")
-    if (auth === empty)
+    let showAddCartButton = checkToken()
+    if (!showAddCartButton)
     {
        return <GuestNavbar/>;
     } else
@@ -35,7 +34,7 @@ function LoginNavbar() {
                     <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
                         <div className="relative flex h-16 items-center justify-between">
                             <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                                <div className="hidden sm:ml-6 sm:block">
+                                <div className="sm:ml-6 sm:block">
                                     <div className="flex space-x-4">
                                         {navigation.map((item) => (
                                             <NavLink
@@ -125,8 +124,8 @@ function GuestNavbar() {
                 <>
                     <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
                         <div className="relative flex h-16 items-center justify-between">
-                            <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                                <div className="hidden sm:ml-6 sm:block">
+                            <div className="flex flex-1 sm:items-stretch sm:justify-start">
+                                <div className="items-center justify-center sm:ml-6 sm:block">
                                     <div className="flex space-x-4">
                                         {navigation.map((item) => (
                                             <NavLink

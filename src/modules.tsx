@@ -15,7 +15,14 @@ export const getJsonManga = async (url: string) => {
 }
 
 export const getJsonCart = async (url: string) => {
-    let access_token = document.cookie.replace("access_token=", "")
+    const tokens = document.cookie.split(' ')
+    let access_token = ''
+    for (var i = 0; i < tokens.length; i++) {
+        if (tokens[i].startsWith("access_token=")) {
+            access_token = tokens[i].replace("access_token=", "")
+        }
+    }
+    access_token = access_token.replace(";", "")
     return axios.get(`${ENDPOINT}/${url}`, {withCredentials: true, headers: {
             "Authorization": `Bearer ${access_token}`
         }}).then(function (r) {
@@ -27,6 +34,7 @@ export const getJsonCart = async (url: string) => {
 
 export const deleteCart = async (url: string) => {
     const res = await fetch(`${ENDPOINT}/${url}`, {method: "DELETE"})
+    window.location.replace("/cart")
     return res
 }
 
@@ -61,7 +69,14 @@ export function loginUser (url: string, name: string, pass: string)  {
 }
 
 export function logoutUser (url: string) {
-    let access_token = document.cookie.replace("access_token=", "")
+    const tokens = document.cookie.split(' ')
+    let access_token = ''
+    for (var i = 0; i < tokens.length; i++) {
+        if (tokens[i].startsWith("access_token=")) {
+            access_token = tokens[i].replace("access_token=", "")
+        }
+    }
+    access_token = access_token.replace(";", "")
     console.log(access_token)
     return axios.get(`${ENDPOINT}/${url}`, {withCredentials: true, headers: {
             "Authorization": `Bearer ${access_token}`
@@ -71,3 +86,18 @@ export function logoutUser (url: string) {
     })
 }
 
+export function checkToken() {
+    let tokens = document.cookie.split(' ')
+    let access_token = ''
+    for (var i = 0; i < tokens.length; i++) {
+        if (tokens[i].startsWith("access_token=")) {
+            access_token = tokens[i].replace("access_token=", "")
+        }
+    }
+    access_token = access_token.replace(";", "")
+    let showAddCartButton = true
+    if (access_token == "") {
+        showAddCartButton = false
+    }
+    return showAddCartButton
+}

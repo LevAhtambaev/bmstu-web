@@ -79,7 +79,7 @@ export function MangaPage() {
         <>
             <Navbar/>
             <Banner/>
-            <div className="flex pt-5 place-content-center">
+            <div className="flex pt-5 sm:pt-32 place-content-center">
                 <form>
                     <input
                         type="text"
@@ -89,7 +89,7 @@ export function MangaPage() {
                     />
                 </form>
             </div>
-            <div className="flex pt-5 place-content-center">
+            <div className="flex pt-5 sm:pt-32 place-content-center">
                 <Box sx={{ width: 300 }}>
                     <Slider
                         getAriaLabel={() => 'Price filter'}
@@ -105,7 +105,7 @@ export function MangaPage() {
                     />
                 </Box>
             </div>
-            <div className="container grid grid-cols-3 gap-2">
+            <div className="container grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {filteredMangas.filter((manga: { Price: number; }) => manga.Price >= price[0] && manga.Price <= price[1]).map((manga: IManga)=> {
                     return (
                         <MyContext.Provider value={manga}>

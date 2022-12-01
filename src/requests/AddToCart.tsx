@@ -12,7 +12,7 @@ export function AddToCart(uuid: string) {
 
     return (
         <>
-            <button onClick={() => Add()}>Добавить в корзину</button>
+            <button onClick={() => Add()}>В корзину</button>
         </>
     );
 

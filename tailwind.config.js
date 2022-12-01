@@ -5,11 +5,11 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        back: "url(../public/resourses/mainBack.jpg)",
-        banner: "url(../public/resourses/navBar.jpg)",
-      }
-    },
+      screens: {
+          'sm': '428px',
+          // => @media (min-width: 428px) { ... }
+        },
+      },
   },
   plugins: [],
 }
