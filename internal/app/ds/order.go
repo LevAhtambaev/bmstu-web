@@ -8,7 +8,7 @@ import (
 
 type Order struct {
 	UUID     uuid.UUID      `db:"uuid" gorm:"type:uuid;default:uuid_generate_v4();primary_key"`
-	Mangas   pq.StringArray `db:"mangas" gorm:"type:text[]"`
+	Comics   pq.StringArray `db:"comics" gorm:"type:text[]"`
 	UserUUID uuid.UUID      `db:"user_uuid"`
 	Date     time.Time      `db:"date" gorm:"type:timestamp"`
 	Status   string         `db:"status"`

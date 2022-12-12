@@ -5,7 +5,7 @@
 create table orders
 (
     uuid      uuid NOT NULL DEFAULT uuid_generate_v4() primary key,
-    mangas      text[],
+    comics      text[],
     user_uuid uuid,
     date      timestamp,
     status    text,

@@ -12,9 +12,9 @@ import (
 
 func (r *Repository) AddOrder(order ds.Order) error {
 	var names []string
-	log.Println(order.Mangas)
-	for _, val := range order.Mangas {
-		name, err := r.GetMangaName(val)
+	log.Println(order.Comics)
+	for _, val := range order.Comics {
+		name, err := r.GetComicsName(val)
 		if err != nil {
 			return err
 		}
@@ -22,7 +22,7 @@ func (r *Repository) AddOrder(order ds.Order) error {
 	}
 	log.Println(names)
 
-	order.Mangas = names
+	order.Comics = names
 	//date := time.Now().Add(time.Hour * 3)
 	var err error
 	order.Date = time.Now() //, err = time.Parse("2006-01-02 15:04:05", date.Format("2006-01-02 15:04:05"))
@@ -45,6 +45,9 @@ func (r *Repository) GetOrders(stDate, endDate, status string) ([]ds.Order, erro
 	var err error
 	st, _ := url.QueryUnescape(status)
 	log.Println(st)
+	if st == "Все статусы" {
+		st = ""
+	}
 	if st == "" {
 		if stDate == "" && endDate == "" {
 			err = r.db.Order("date").Find(&orders).Error

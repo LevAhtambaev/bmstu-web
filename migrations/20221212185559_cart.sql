@@ -5,9 +5,9 @@
 create table cart
 (
     uuid uuid NOT NULL DEFAULT uuid_generate_v4() primary key,
-    manga uuid,
+    comics uuid,
     user_uuid uuid,
-    foreign key (manga) references manga(uuid) ON DELETE CASCADE,
+    foreign key (comics) references comics(uuid) ON DELETE CASCADE,
     foreign key (user_uuid) references users(uuid) ON DELETE CASCADE
 );
 

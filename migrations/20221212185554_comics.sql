@@ -1,6 +1,6 @@
 -- +goose Up
 -- +goose StatementBegin
-create table manga
+create table comics
 (
     uuid        uuid NOT NULL DEFAULT uuid_generate_v4() primary key,
     name        text,
@@ -19,5 +19,5 @@ create table manga
 
 -- +goose Down
 -- +goose StatementBegin
-DROP TABLE manga;
+DROP TABLE comics;
 -- +goose StatementEnd

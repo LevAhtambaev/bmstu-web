@@ -31,14 +31,14 @@ func (a *Application) StartServer() {
 
 	r.Use(CORSMiddleware())
 
-	r.GET("/manga", a.GetList)
+	r.GET("/comics", a.GetList)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.GET("/role", a.Role)
 	r.GET("/logout", a.Logout)
 
-	//r.GET("/manga/price/:uuid", a.GetMangaPrice)
+	//r.GET("/comics/price/:uuid", a.GetMangaPrice)
 
-	r.GET("/manga/:uuid", a.GetManga)
+	r.GET("/comics/:uuid", a.GetComics)
 
 	r.POST("/cart", a.AddToCart)
 	r.POST("/login", a.Login)
@@ -48,10 +48,10 @@ func (a *Application) StartServer() {
 	r.Use(a.WithAuthCheck(role.Buyer, role.Manager)).POST("/orders", a.AddOrder)
 	r.Use(a.WithAuthCheck(role.Buyer, role.Manager, role.Admin)).GET("/cart", a.GetCart)
 	r.Use(a.WithAuthCheck(role.Manager)).GET("/user/:uuid", a.GetUser)
-	r.Use(a.WithAuthCheck(role.Manager)).PUT("/manga/:uuid", a.ChangeManga)
+	r.Use(a.WithAuthCheck(role.Manager)).PUT("/comics/:uuid", a.ChangeComics)
 	r.Use(a.WithAuthCheck(role.Manager)).GET("/orders", a.GetOrders)
-	r.Use(a.WithAuthCheck(role.Manager)).POST("/manga", a.AddManga)
-	r.Use(a.WithAuthCheck(role.Manager)).DELETE("manga/:uuid", a.DeleteManga)
+	r.Use(a.WithAuthCheck(role.Manager)).POST("/comics", a.AddComics)
+	r.Use(a.WithAuthCheck(role.Manager)).DELETE("comics/:uuid", a.DeleteComics)
 	r.Use(a.WithAuthCheck(role.Manager)).PUT("/orders/:uuid", a.ChangeStatus)
 
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")

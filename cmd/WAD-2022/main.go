@@ -8,12 +8,12 @@ import (
 	"os"
 )
 
-// @title Manga Store
+// @title Comics Store
 // @version 1.0
-// @description Store of the best manga
+// @description Comics store
 // @contact.name API Support
-// @contact.url https://vk.com/vvjkee
-// @contact.email volohajks@inbox.ru
+// @contact.url https://vk.com/id250446192
+// @contact.email fotchin@mail.ru
 
 // @license.name AS IS (NO WARRANTY)
 

@@ -4,7 +4,7 @@ import (
 	"github.com/google/uuid"
 )
 
-type Manga struct {
+type Comics struct {
 	UUID        uuid.UUID `db:"uuid" gorm:"type:uuid;default:uuid_generate_v4();primary_key;"`
 	Name        string    `db:"name"`
 	Rate        float64   `db:"rate"`
@@ -16,6 +16,6 @@ type Manga struct {
 	Image       string    `db:"image"`
 }
 
-func (Manga) TableName() string {
-	return "manga"
+func (Comics) TableName() string {
+	return "comics"
 }

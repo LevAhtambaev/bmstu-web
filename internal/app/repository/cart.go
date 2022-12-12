@@ -20,9 +20,9 @@ func (r *Repository) AddToCart(cart ds.Cart, userUUID uuid.UUID) error {
 	return nil
 }
 
-func (r *Repository) DeleteFromCart(manga uuid.UUID, userUUID uuid.UUID) (int, error) {
+func (r *Repository) DeleteFromCart(comics uuid.UUID, userUUID uuid.UUID) (int, error) {
 	var cart ds.Cart
-	err := r.db.Where("manga = ? AND user_uuid = ?", manga, userUUID).Delete(&cart).Error
+	err := r.db.Where("comics = ? AND user_uuid = ?", comics, userUUID).Delete(&cart).Error
 	if err != nil {
 		return 500, err
 	}
