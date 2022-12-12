@@ -28,8 +28,8 @@ export function Comics() {
             className="py-3 px-0 rounded flex flex-col justify-self-center items-center mb-2 place-content-start"
         >
             <img src={ctx.Image} className="w-3/5 sm:w-2/5" alt={ctx.Name}/>
-            <p>{ ctx.Name }</p>
-            <p className="font-bold">{ctx.Price} рублей</p>
+            <p className="text-2xl">{ ctx.Name }</p>
+            <p className="text-xl font-bold">{ctx.Price} рублей</p>
             <Link to={`${ctx.UUID}`}
                   className="w-30 sm:w-1/10 border-4 border-indigo-700 text-indigo-700 hover:bg-blue-700 hover:text-white py-1 sm:px-3 place-self-center rounded-full text-xl font-bold"
                   state={{comics: ctx}}

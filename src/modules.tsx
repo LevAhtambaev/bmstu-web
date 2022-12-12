@@ -160,7 +160,7 @@ export function logoutUser (url: string) {
             "Authorization": `Bearer ${access_token}`
         }}).then(function (r) {
             console.log(r.data)
-        window.location.replace("/comics")
+        window.location.replace("/login")
     })
 }
 
