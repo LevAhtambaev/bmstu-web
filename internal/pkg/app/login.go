@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
-	"github.com/google/uuid"
 	log "github.com/sirupsen/logrus"
 	"net/http"
 	"strings"
@@ -54,7 +53,7 @@ func (a *Application) Login(gCtx *gin.Context) {
 				IssuedAt:  time.Now().Unix(),
 				Issuer:    "bitop-admin",
 			},
-			UserUUID: uuid.New(), // test uuid
+			UserUUID: user.UUID, // test uuid
 			Role:     user.Role,
 		})
 
@@ -100,17 +99,6 @@ type registerReq struct {
 
 type registerResp struct {
 	Ok bool `json:"ok"`
-}
-
-func (a *Application) GetUser(gCtx *gin.Context) {
-	jwtStr := gCtx.GetHeader("Authorization")
-	if !strings.HasPrefix(jwtStr, jwtPrefix) { // если нет префикса то нас дурят!
-		gCtx.AbortWithStatus(http.StatusBadRequest) // отдаем что нет доступа
-
-		return // завершаем обработку
-	}
-	// отрезаем префикс
-	jwtStr = jwtStr[len(jwtPrefix):]
 }
 
 func (a *Application) Register(gCtx *gin.Context) {
