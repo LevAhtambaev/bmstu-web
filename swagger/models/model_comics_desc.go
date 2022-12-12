@@ -1,5 +1,5 @@
 package models
 
-type ModelMangaDesc struct {
+type ModelComicsDesc struct {
 	Description string `json:"description,omitempty"`
 }

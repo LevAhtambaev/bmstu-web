@@ -6,33 +6,33 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-"context"
+	"context"
 
-"github.com/go-openapi/strfmt"
-"github.com/go-openapi/swag"
+	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 )
 
 // ModelNewsUpdated model news updated
 //
 // swagger:model model.NewsUpdated
-type ModelMangaCreated struct {
+type ModelComicsCreated struct {
 
 	// success
 	Success bool `json:"success,omitempty"`
 }
 
 // Validate validates this model news updated
-func (m *ModelMangaCreated) Validate(formats strfmt.Registry) error {
+func (m *ModelComicsCreated) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
 // ContextValidate validates this model news updated based on context it is used
-func (m *ModelMangaCreated) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+func (m *ModelComicsCreated) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 
 // MarshalBinary interface implementation
-func (m *ModelMangaCreated) MarshalBinary() ([]byte, error) {
+func (m *ModelComicsCreated) MarshalBinary() ([]byte, error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -40,8 +40,8 @@ func (m *ModelMangaCreated) MarshalBinary() ([]byte, error) {
 }
 
 // UnmarshalBinary interface implementation
-func (m *ModelMangaCreated) UnmarshalBinary(b []byte) error {
-	var res ModelMangaCreated
+func (m *ModelComicsCreated) UnmarshalBinary(b []byte) error {
+	var res ModelComicsCreated
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

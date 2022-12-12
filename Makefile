@@ -1,11 +1,32 @@
-dbUp:
+PWD = ${CURDIR}
+NAME = WAD-2022
+
+# Запустить проект
+.PHONY: run
+run:
+	go run $(PWD)/cmd/$(NAME)/
+
+# Сбилдить проект
+.PHONY: build
+build:
+	go build -o bin/$(NAME) $(PWD)/cmd/$(NAME)
+
+# Создать .env файл
+.PHONY: local
+local:
+	cp .dist.env .env
+
+# Запустить миграции
+.PHONY: migrate
+migrate:
+	go run $(PWD)/cmd/migrate
+
+# Запустить docker
+.PHONY: docker
+docker:
 	docker compose up -d
 
-build:
-	go build -o bin/main cmd/WAD-2022/main.go
-
-migrate:
-	go run cmd/migrate/main.go
-
-run:
-	go run cmd/WAD-2022/main.go
+# Сгенерировать swagger
+.PHONY: swagger
+swagger:
+	swag init -g cmd/$(NAME)/main.go

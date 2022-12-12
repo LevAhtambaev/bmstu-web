@@ -5,12 +5,12 @@
     ],
     "swagger": "2.0",
     "info": {
-        "description": "Store of the best manga",
-        "title": "Manga Store",
+        "description": "Comics store",
+        "title": "Comics Store",
         "contact": {
             "name": "API Support",
-            "url": "https://vk.com/vvjkee",
-            "email": "volohajks@inbox.ru"
+            "url": "https://vk.com/id250446192",
+            "email": "fotchin@mail.ru"
         },
         "license": {
             "name": "AS IS (NO WARRANTY)"
@@ -20,9 +20,9 @@
     "host": "127.0.0.1:8080",
     "basePath": "/",
     "paths": {
-        "/manga/": {
+        "/comics/": {
             "get": {
-                "description": "Get a list of all mangas",
+                "description": "Get a list of all comics",
                 "produces": [
                     "application/json"
                 ],
@@ -34,7 +34,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/ds.Manga"
+                            "$ref": "#/definitions/ds.Comics"
                         }
                     },
                     "500": {
@@ -46,17 +46,17 @@
                 }
             },
             "post": {
-                "description": "Adding a new manga to database",
+                "description": "Adding a new comics to database",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Add"
                 ],
-                "summary": "Add a new manga",
+                "summary": "Add a new comics",
                 "parameters": [
                     {
-                        "description": "Название манги",
+                        "description": "Название",
                         "name": "Name",
                         "in": "body",
                         "required": true,
@@ -65,7 +65,7 @@
                         }
                     },
                     {
-                        "description": "Рейтинг манги",
+                        "description": "Рейтинг",
                         "name": "Rate",
                         "in": "body",
                         "required": true,
@@ -122,7 +122,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/models.ModelMangaCreated"
+                            "$ref": "#/definitions/models.ModelComicsCreated"
                         }
                     },
                     "500": {
@@ -134,20 +134,20 @@
                 }
             }
         },
-        "/manga/{uuid}": {
+        "/comics/{uuid}": {
             "get": {
-                "description": "Get a manga via uuid",
+                "description": "Get a comics via uuid",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Info"
                 ],
-                "summary": "Get manga with corresponding name",
+                "summary": "Get comics with corresponding name",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "UUID манги",
+                        "description": "UUID комикса",
                         "name": "UUID",
                         "in": "query",
                         "required": true
@@ -157,7 +157,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.ModelMangaDesc"
+                            "$ref": "#/definitions/models.ModelComicsDesc"
                         }
                     },
                     "500": {
@@ -169,18 +169,18 @@
                 }
             },
             "put": {
-                "description": "Change a description of manga via its uuid",
+                "description": "Change a description of comics via its uuid",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Change"
                 ],
-                "summary": "Change manga description",
+                "summary": "Change comics",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "UUID манги",
+                        "description": "UUID комикса",
                         "name": "UUID",
                         "in": "query",
                         "required": true
@@ -209,18 +209,18 @@
                 }
             },
             "delete": {
-                "description": "Delete a manga via its uuid",
+                "description": "Delete a comics via its uuid",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Change"
                 ],
-                "summary": "Delete a manga",
+                "summary": "Delete a comics",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "UUID манги",
+                        "description": "UUID комикса",
                         "name": "UUID",
                         "in": "query",
                         "required": true
@@ -230,7 +230,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.ModelMangaDeleted"
+                            "$ref": "#/definitions/models.ModelComicsDeleted"
                         }
                     },
                     "500": {
@@ -244,16 +244,16 @@
         }
     },
     "definitions": {
-        "ds.Manga": {
+        "ds.Comics": {
             "type": "object",
             "properties": {
                 "description": {
                     "type": "string"
                 },
-                "episodes": {
-                    "type": "integer"
-                },
                 "genre": {
+                    "type": "string"
+                },
+                "image": {
                     "type": "string"
                 },
                 "name": {
@@ -263,13 +263,41 @@
                     "type": "integer"
                 },
                 "rate": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "uuid": {
                     "type": "string"
                 },
+                "volumes": {
+                    "type": "integer"
+                },
                 "year": {
                     "type": "integer"
+                }
+            }
+        },
+        "models.ModelComicsCreated": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "description": "success",
+                    "type": "boolean"
+                }
+            }
+        },
+        "models.ModelComicsDeleted": {
+            "type": "object",
+            "properties": {
+                "delete": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "models.ModelComicsDesc": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
                 }
             }
         },
@@ -294,31 +322,6 @@
                 },
                 "type": {
                     "description": "type",
-                    "type": "string"
-                }
-            }
-        },
-        "models.ModelMangaCreated": {
-            "type": "object",
-            "properties": {
-                "success": {
-                    "description": "success",
-                    "type": "boolean"
-                }
-            }
-        },
-        "models.ModelMangaDeleted": {
-            "type": "object",
-            "properties": {
-                "delete": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "models.ModelMangaDesc": {
-            "type": "object",
-            "properties": {
-                "description": {
                     "type": "string"
                 }
             }

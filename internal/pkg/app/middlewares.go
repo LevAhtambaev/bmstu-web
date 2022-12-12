@@ -93,12 +93,12 @@ func (a *Application) GetUserByToken(jwtStr string) (userUUID uuid.UUID) {
 
 // GetList godoc
 // @Summary      Get all records
-// @Description  Get a list of all mangas
+// @Description  Get a list of all comics
 // @Tags         Info
 // @Produce      json
-// @Success      200  {object}  ds.Manga
+// @Success      200  {object}  ds.Comics
 // @Failure 500 {object} models.ModelError
-// @Router       /manga/ [get]
+// @Router       /comics/ [get]
 func (a *Application) GetList(gCtx *gin.Context) {
 	resp, err := a.repo.GetAllComics()
 	if err != nil {
@@ -114,15 +114,15 @@ func (a *Application) GetList(gCtx *gin.Context) {
 	gCtx.JSON(http.StatusOK, resp)
 }
 
-// GetManga  godoc
-// @Summary      Get manga with corresponding name
-// @Description  Get a manga via uuid
+// GetComics  godoc
+// @Summary      Get comics with corresponding name
+// @Description  Get a comics via uuid
 // @Tags         Info
 // @Produce      json
-// @Param UUID query string true "UUID манги"
-// @Success      200  {object}  models.ModelMangaDesc
+// @Param UUID query string true "UUID комикса"
+// @Success      200  {object}  models.ModelComicsDesc
 // @Failure 	 500 {object} models.ModelError
-// @Router       /manga/{uuid} [get]
+// @Router       /comics/{uuid} [get]
 func (a *Application) GetComics(gCtx *gin.Context) {
 	uuid := gCtx.Param("uuid")
 	resp, err := a.repo.GetComicsByName(uuid)
@@ -147,16 +147,16 @@ func (a *Application) GetComics(gCtx *gin.Context) {
 	gCtx.JSON(http.StatusOK, resp)
 }
 
-// ChangeManga  godoc
-// @Summary      Change manga
-// @Description  Change a description of manga via its uuid
+// ChangeComics  godoc
+// @Summary      Change comics
+// @Description  Change a description of comics via its uuid
 // @Tags         Change
 // @Produce      json
-// @Param UUID query string true "UUID манги"
+// @Param UUID query string true "UUID комикса"
 // @Param Description query string true "Новое описание"
 // @Success      200  {object}  models.ModelDescChanged
 // @Failure 	 500 {object} models.ModelError
-// @Router       /manga/{uuid} [put]
+// @Router       /comics/{uuid} [put]
 func (a *Application) ChangeComics(gCtx *gin.Context) {
 	UUID, err := uuid.Parse(gCtx.Param("uuid"))
 
@@ -199,15 +199,15 @@ func (a *Application) ChangeComics(gCtx *gin.Context) {
 
 }
 
-// DeleteManga   godoc
-// @Summary      Delete a manga
-// @Description  Delete a manga via its uuid
+// DeleteComics   godoc
+// @Summary      Delete a comics
+// @Description  Delete a comics via its uuid
 // @Tags         Change
 // @Produce      json
-// @Param UUID query string true "UUID манги"
-// @Success      200  {object}  models.ModelMangaDeleted
+// @Param UUID query string true "UUID комикса"
+// @Success      200  {object}  models.ModelComicsDeleted
 // @Failure 	 500 {object} models.ModelError
-// @Router       /manga/{uuid} [delete]
+// @Router       /comics/{uuid} [delete]
 func (a *Application) DeleteComics(gCtx *gin.Context) {
 	uuid := gCtx.Param("uuid")
 	msg, err := a.repo.DeleteComics(uuid)
@@ -243,27 +243,27 @@ func (a *Application) DeleteComics(gCtx *gin.Context) {
 	}
 	gCtx.JSON(
 		http.StatusOK,
-		&models.ModelMangaDeleted{
+		&models.ModelComicsDeleted{
 			Success: true,
 		})
 
 }
 
-// AddManga godoc
-// @Summary      Add a new manga
-// @Description  Adding a new manga to database
+// AddComics godoc
+// @Summary      Add a new comics
+// @Description  Adding a new comics to database
 // @Tags         Add
 // @Produce      json
-// @Param Name body string true "Название манги"
-// @Param Rate body uint64 true "Рейтинг манги"
+// @Param Name body string true "Название"
+// @Param Rate body uint64 true "Рейтинг"
 // @Param Year body uint64 true "Год производства"
 // @Param Genre body string true "Жанр"
 // @Param Price body uint64 true "Цена"
 // @Param Episodes body uint64 true "Количество серий"
 // @Param Description body string false "Описание"
-// @Success      201  {object}  models.ModelMangaCreated
+// @Success      201  {object}  models.ModelComicsCreated
 // @Failure 500 {object} models.ModelError
-// @Router       /manga/ [Post]
+// @Router       /comics/ [Post]
 func (a *Application) AddComics(gCtx *gin.Context) {
 	comics := ds.Comics{}
 	err := gCtx.BindJSON(&comics)
@@ -289,7 +289,7 @@ func (a *Application) AddComics(gCtx *gin.Context) {
 	}
 	gCtx.JSON(
 		http.StatusOK,
-		&models.ModelMangaCreated{
+		&models.ModelComicsCreated{
 			Success: true,
 		})
 }

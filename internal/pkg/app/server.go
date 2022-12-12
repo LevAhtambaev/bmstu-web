@@ -1,6 +1,7 @@
 package app
 
 import (
+	_ "WAD-2022/docs"
 	"WAD-2022/internal/app/role"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
@@ -35,8 +36,6 @@ func (a *Application) StartServer() {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.GET("/role", a.Role)
 	r.GET("/logout", a.Logout)
-
-	//r.GET("/comics/price/:uuid", a.GetMangaPrice)
 
 	r.GET("/comics/:uuid", a.GetComics)
 

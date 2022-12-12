@@ -12,8 +12,8 @@ const docTemplate = `{
         "title": "{{.Title}}",
         "contact": {
             "name": "API Support",
-            "url": "https://vk.com/vvjkee",
-            "email": "volohajks@inbox.ru"
+            "url": "https://vk.com/id250446192",
+            "email": "fotchin@mail.ru"
         },
         "license": {
             "name": "AS IS (NO WARRANTY)"
@@ -23,9 +23,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/manga/": {
+        "/comics/": {
             "get": {
-                "description": "Get a list of all mangas",
+                "description": "Get a list of all comics",
                 "produces": [
                     "application/json"
                 ],
@@ -37,7 +37,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/ds.Manga"
+                            "$ref": "#/definitions/ds.Comics"
                         }
                     },
                     "500": {
@@ -49,17 +49,17 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "description": "Adding a new manga to database",
+                "description": "Adding a new comics to database",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Add"
                 ],
-                "summary": "Add a new manga",
+                "summary": "Add a new comics",
                 "parameters": [
                     {
-                        "description": "Название манги",
+                        "description": "Название",
                         "name": "Name",
                         "in": "body",
                         "required": true,
@@ -68,7 +68,7 @@ const docTemplate = `{
                         }
                     },
                     {
-                        "description": "Рейтинг манги",
+                        "description": "Рейтинг",
                         "name": "Rate",
                         "in": "body",
                         "required": true,
@@ -125,7 +125,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/models.ModelMangaCreated"
+                            "$ref": "#/definitions/models.ModelComicsCreated"
                         }
                     },
                     "500": {
@@ -137,20 +137,20 @@ const docTemplate = `{
                 }
             }
         },
-        "/manga/{uuid}": {
+        "/comics/{uuid}": {
             "get": {
-                "description": "Get a manga via uuid",
+                "description": "Get a comics via uuid",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Info"
                 ],
-                "summary": "Get manga with corresponding name",
+                "summary": "Get comics with corresponding name",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "UUID манги",
+                        "description": "UUID комикса",
                         "name": "UUID",
                         "in": "query",
                         "required": true
@@ -160,7 +160,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.ModelMangaDesc"
+                            "$ref": "#/definitions/models.ModelComicsDesc"
                         }
                     },
                     "500": {
@@ -172,18 +172,18 @@ const docTemplate = `{
                 }
             },
             "put": {
-                "description": "Change a description of manga via its uuid",
+                "description": "Change a description of comics via its uuid",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Change"
                 ],
-                "summary": "Change manga description",
+                "summary": "Change comics",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "UUID манги",
+                        "description": "UUID комикса",
                         "name": "UUID",
                         "in": "query",
                         "required": true
@@ -212,18 +212,18 @@ const docTemplate = `{
                 }
             },
             "delete": {
-                "description": "Delete a manga via its uuid",
+                "description": "Delete a comics via its uuid",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Change"
                 ],
-                "summary": "Delete a manga",
+                "summary": "Delete a comics",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "UUID манги",
+                        "description": "UUID комикса",
                         "name": "UUID",
                         "in": "query",
                         "required": true
@@ -233,7 +233,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.ModelMangaDeleted"
+                            "$ref": "#/definitions/models.ModelComicsDeleted"
                         }
                     },
                     "500": {
@@ -247,16 +247,16 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "ds.Manga": {
+        "ds.Comics": {
             "type": "object",
             "properties": {
                 "description": {
                     "type": "string"
                 },
-                "episodes": {
-                    "type": "integer"
-                },
                 "genre": {
+                    "type": "string"
+                },
+                "image": {
                     "type": "string"
                 },
                 "name": {
@@ -266,13 +266,41 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "rate": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "uuid": {
                     "type": "string"
                 },
+                "volumes": {
+                    "type": "integer"
+                },
                 "year": {
                     "type": "integer"
+                }
+            }
+        },
+        "models.ModelComicsCreated": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "description": "success",
+                    "type": "boolean"
+                }
+            }
+        },
+        "models.ModelComicsDeleted": {
+            "type": "object",
+            "properties": {
+                "delete": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "models.ModelComicsDesc": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
                 }
             }
         },
@@ -300,31 +328,6 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
-        },
-        "models.ModelMangaCreated": {
-            "type": "object",
-            "properties": {
-                "success": {
-                    "description": "success",
-                    "type": "boolean"
-                }
-            }
-        },
-        "models.ModelMangaDeleted": {
-            "type": "object",
-            "properties": {
-                "delete": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "models.ModelMangaDesc": {
-            "type": "object",
-            "properties": {
-                "description": {
-                    "type": "string"
-                }
-            }
         }
     }
 }`
@@ -335,8 +338,8 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "127.0.0.1:8080",
 	BasePath:         "/",
 	Schemes:          []string{"http", "https"},
-	Title:            "Manga Store",
-	Description:      "Store of the best manga",
+	Title:            "Comics Store",
+	Description:      "Comics store",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

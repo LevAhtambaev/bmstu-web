@@ -1,23 +1,41 @@
 basePath: /
 definitions:
-  ds.Manga:
+  ds.Comics:
     properties:
       description:
         type: string
-      episodes:
-        type: integer
       genre:
+        type: string
+      image:
         type: string
       name:
         type: string
       price:
         type: integer
       rate:
-        type: integer
+        type: number
       uuid:
         type: string
+      volumes:
+        type: integer
       year:
         type: integer
+    type: object
+  models.ModelComicsCreated:
+    properties:
+      success:
+        description: success
+        type: boolean
+    type: object
+  models.ModelComicsDeleted:
+    properties:
+      delete:
+        type: boolean
+    type: object
+  models.ModelComicsDesc:
+    properties:
+      description:
+        type: string
     type: object
   models.ModelDescChanged:
     properties:
@@ -36,44 +54,28 @@ definitions:
         description: type
         type: string
     type: object
-  models.ModelMangaCreated:
-    properties:
-      success:
-        description: success
-        type: boolean
-    type: object
-  models.ModelMangaDeleted:
-    properties:
-      delete:
-        type: boolean
-    type: object
-  models.ModelMangaDesc:
-    properties:
-      description:
-        type: string
-    type: object
 host: 127.0.0.1:8080
 info:
   contact:
-    email: volohajks@inbox.ru
+    email: fotchin@mail.ru
     name: API Support
-    url: https://vk.com/vvjkee
-  description: Store of the best manga
+    url: https://vk.com/id250446192
+  description: Comics store
   license:
     name: AS IS (NO WARRANTY)
-  title: Manga Store
+  title: Comics Store
   version: "1.0"
 paths:
-  /manga/:
+  /comics/:
     get:
-      description: Get a list of all mangas
+      description: Get a list of all comics
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/ds.Manga'
+            $ref: '#/definitions/ds.Comics'
         "500":
           description: Internal Server Error
           schema:
@@ -82,15 +84,15 @@ paths:
       tags:
       - Info
     post:
-      description: Adding a new manga to database
+      description: Adding a new comics to database
       parameters:
-      - description: Название манги
+      - description: Название
         in: body
         name: Name
         required: true
         schema:
           type: string
-      - description: Рейтинг манги
+      - description: Рейтинг
         in: body
         name: Rate
         required: true
@@ -131,19 +133,19 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/models.ModelMangaCreated'
+            $ref: '#/definitions/models.ModelComicsCreated'
         "500":
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.ModelError'
-      summary: Add a new manga
+      summary: Add a new comics
       tags:
       - Add
-  /manga/{uuid}:
+  /comics/{uuid}:
     delete:
-      description: Delete a manga via its uuid
+      description: Delete a comics via its uuid
       parameters:
-      - description: UUID манги
+      - description: UUID комикса
         in: query
         name: UUID
         required: true
@@ -154,18 +156,18 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.ModelMangaDeleted'
+            $ref: '#/definitions/models.ModelComicsDeleted'
         "500":
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.ModelError'
-      summary: Delete a manga
+      summary: Delete a comics
       tags:
       - Change
     get:
-      description: Get a manga via uuid
+      description: Get a comics via uuid
       parameters:
-      - description: UUID манги
+      - description: UUID комикса
         in: query
         name: UUID
         required: true
@@ -176,18 +178,18 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.ModelMangaDesc'
+            $ref: '#/definitions/models.ModelComicsDesc'
         "500":
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.ModelError'
-      summary: Get manga with corresponding name
+      summary: Get comics with corresponding name
       tags:
       - Info
     put:
-      description: Change a description of manga via its uuid
+      description: Change a description of comics via its uuid
       parameters:
-      - description: UUID манги
+      - description: UUID комикса
         in: query
         name: UUID
         required: true
@@ -208,7 +210,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.ModelError'
-      summary: Change manga description
+      summary: Change comics
       tags:
       - Change
 schemes:

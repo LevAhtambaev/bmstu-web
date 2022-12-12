@@ -1,5 +1,5 @@
 package models
 
-type ModelMangaDeleted struct {
+type ModelComicsDeleted struct {
 	Success bool `json:"delete,omitempty"`
 }
