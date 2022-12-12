@@ -9,6 +9,9 @@ import {CartPage} from "./components/CartPage";
 import {Registration} from "./components/RegisterPage";
 import {LoginPage} from "./components/LoginPage";
 import {ProfilePage} from "./components/ProfilePage";
+import {AddManga} from "./components/AddManga"
+import {OrderPage} from "./components/OrderPage";
+import {ChangeManga} from "./components/ChangeManga";
 
 
 
@@ -26,8 +29,11 @@ function App() {
                 <Route path="/info" element={<Info/>}/>
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="/registration" element={<Registration/>}/>
-                <Route path="/profile/:id" element={<ProfilePage/>}></Route>
+                <Route path="/add" element={<AddManga/>}/>
+                <Route path="/profile" element={<ProfilePage/>}></Route>
+                <Route path="/orders" element={<OrderPage/>}></Route>
                 <Route path="/error" element={<NotFound/>}/>
+                <Route path="/change" element={<ChangeManga/>}/>
             </Routes>
         </div>
     )

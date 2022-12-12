@@ -3,23 +3,23 @@ import {getToken} from "../modules";
 import axios from "axios";
 import {ENDPOINT} from "../App";
 
-const initialState = {cart: []}
+const initialState = {user: ""}
 const success = "Success"
 
 function reducer(state: any, action: { type: any; payload: any; }) {
     switch (action.type) {
         case success:
             return {
-                cart: action.payload
+                user: action.payload
             }
         default:
             return state
     }
 }
 
-export function GetCart() {
+export function GetUser(uuid: string) {
     const [state, dispatch] = useReducer(reducer, initialState)
-    const url = `cart`
+    const url = `user/${uuid}`
     let access_token = getToken()
 
     useEffect(() => {
@@ -30,5 +30,5 @@ export function GetCart() {
         })
     }, [url])
 
-    return state.cart
+    return state.user
 }

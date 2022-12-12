@@ -1,4 +1,4 @@
-import {IManga, ICart} from "../models";
+import {IManga, ICart, IOrder} from "../models";
 
 export let manga_context : IManga = {
     UUID: "",
@@ -15,4 +15,12 @@ export let manga_context : IManga = {
 export let cart_context: ICart = {
     UUID: "",
     Manga: "",
+}
+
+export let orders_context: IOrder = {
+    UUID: "",
+    Mangas: [""],
+    UserUUID: "",
+    Date: "",
+    Status: "",
 }

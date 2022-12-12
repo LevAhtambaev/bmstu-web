@@ -15,3 +15,10 @@ export interface ICart {
     Manga: string
 }
 
+export interface IOrder {
+    UUID: string
+    Mangas: string[]
+    UserUUID: string
+    Date: string
+    Status: string
+}

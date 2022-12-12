@@ -14,6 +14,23 @@ export const getJsonManga = async (url: string) => {
     return res
 }
 
+export function getToken() {
+    let tokens = document.cookie.split(' ')
+    let access_token = ''
+    for (var i = 0; i < tokens.length; i++) {
+        if (tokens[i].startsWith("access_token=")) {
+            access_token = tokens[i].replace("access_token=", "")
+        }
+    }
+    return access_token.replace(";", "")
+}
+
+export function getRole(token: string) {
+    return axios.get(`${ENDPOINT}/role`, {withCredentials: true, headers: {
+            "Authorization": `Bearer ${token}`
+        }}).then(r => r.data)
+}
+
 export const getJsonCart = async (url: string) => {
     const tokens = document.cookie.split(' ')
     let access_token = ''
@@ -33,20 +50,89 @@ export const getJsonCart = async (url: string) => {
 }
 
 export const deleteCart = async (url: string) => {
-    const res = await fetch(`${ENDPOINT}/${url}`, {method: "DELETE"})
-    window.location.replace("/cart")
-    return res
+    let access_token = getToken()
+    return axios.delete(`${ENDPOINT}/${url}`, {withCredentials: true, headers: {
+            "Authorization": `Bearer ${access_token}`
+        }}).then(r => r.data)
 }
 
 export const addToCart = async (url: string, uuid: string) => {
-    const res = await fetch(`${ENDPOINT}/${url}` , {
-        method: "POST",
-        headers: {
-            'Content-type': 'application/json'
-        },
-        body: JSON.stringify({Manga: uuid})
+    const body = {Manga: uuid}
+    let access_token = getToken()
+    return  axios.post(`${ENDPOINT}/${url}`, body, {withCredentials: true, headers: {
+            "Authorization": `Bearer ${access_token}`
+        }}).then(function (response) {
+        console.log(response);
     })
-    return res
+}
+
+export function addManga(url: string, name: string, rate: number, year: number, genre: string, price: number, episodes: number, description: string, image: string) {
+    const body = {
+        Name: name,
+        Rate: rate,
+        Year: year,
+        Genre: genre,
+        Price: price,
+        Volumes: episodes,
+        Description: description,
+        Image: image,
+    }
+    let access_token = getToken()
+    console.log(body)
+    return axios.post(`${ENDPOINT}/${url}`, body, {
+        withCredentials: true, headers: {
+            "Authorization": `Bearer ${access_token}`
+        }
+    }).then(function (response) {
+        console.log(response);
+    })
+}
+
+export function changeManga(uuid:string, url: string, name: string, rate: number, year: number, genre: string, price: number, episodes: number, description: string, image: string) {
+    const body = {
+        Name: name,
+        Rate: rate,
+        Year: year,
+        Genre: genre,
+        Price: price,
+        Volumes: episodes,
+        Description: description,
+        Image: image,
+    }
+    let access_token = getToken()
+    console.log(body)
+    return axios.put(`${ENDPOINT}/${url}/${uuid}`, body, {
+        withCredentials: true, headers: {
+            "Authorization": `Bearer ${access_token}`
+        }
+    }).then(function (response) {
+        console.log(response);
+    })
+}
+
+export function deleteManga (url: string, uuid: string) {
+    let access_token = getToken()
+    return axios.delete(`${ENDPOINT}/${url}/${uuid}`, {withCredentials: true, headers: {
+            "Authorization": `Bearer ${access_token}`
+        }}).then(r => r.data)
+}
+
+export function addOrder (url: string, mangas_uuid: string[])  {
+    const body = { Mangas: mangas_uuid }
+    let access_token = getToken()
+    return  axios.post(`${ENDPOINT}/${url}`, body, {withCredentials: true, headers: {
+            "Authorization": `Bearer ${access_token}`
+        }}).then(function (response) {
+        console.log(response);
+    })
+
+}
+
+export function updateStatus(token: string, uuid: string, status: string) {
+    const body = { Status: status }
+    return axios.put(`${ENDPOINT}/orders/${uuid}`, body,{withCredentials: true, headers: {
+            "Authorization": `Bearer ${token}`
+        }}).then(r => r.data)
 }
 
 export function createUser(url: string, name: string, pass: string) {
@@ -69,15 +155,7 @@ export function loginUser (url: string, name: string, pass: string)  {
 }
 
 export function logoutUser (url: string) {
-    const tokens = document.cookie.split(' ')
-    let access_token = ''
-    for (var i = 0; i < tokens.length; i++) {
-        if (tokens[i].startsWith("access_token=")) {
-            access_token = tokens[i].replace("access_token=", "")
-        }
-    }
-    access_token = access_token.replace(";", "")
-    console.log(access_token)
+    let access_token = getToken()
     return axios.get(`${ENDPOINT}/${url}`, {withCredentials: true, headers: {
             "Authorization": `Bearer ${access_token}`
         }}).then(function (r) {
