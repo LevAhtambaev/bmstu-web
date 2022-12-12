@@ -1,44 +1,45 @@
 import React, {useState} from "react"
 import {Navbar} from "./Navbar";
-import {AddingManga} from "../requests/AddManga";
+import {AddingComics} from "../requests/AddComics";
+import {Link} from "react-router-dom";
 
-export function AddManga() {
-    const [name, setName] = useState('');
+export function AddComics() {
+    const [name, setName] = useState('Batman');
     const handleChangeName = (event: { target: { value: any; }; }) => {
         setName(event.target.value);
     };
 
-    const [rate, setRate] = useState(0);
+    const [rate, setRate] = useState(7);
     const handleChangeRate = (event: { target: { value: any; }; }) => {
         setRate(Number(event.target.value));
     };
 
-    const [year, setYear] = useState(0);
+    const [year, setYear] = useState(1970);
     const handleChangeYear = (event: { target: { value: any; }; }) => {
         setYear(Number(event.target.value));
     };
 
-    const [genre, setGenre] = useState('Senen');
+    const [genre, setGenre] = useState('Детектив');
     const handleChangeGenre = (event: { target: { value: any; }; }) => {
         setGenre(event.target.value);
     };
 
-    const [price, setPrice] = useState(0);
+    const [price, setPrice] = useState(2400);
     const handleChangePrice = (event: { target: { value: any; }; }) => {
-        setPrice(event.target.value);
+        setPrice(Number(event.target.value));
     };
 
-    const [episodes, setEpisodes] = useState(0);
+    const [episodes, setEpisodes] = useState(5);
     const handleChangeEpisodes = (event: { target: { value: any; }; }) => {
         setEpisodes(Number(event.target.value));
     };
 
-    const [description, setDescription] = useState('');
+    const [description, setDescription] = useState('Batman comics');
     const handleChangeDescription = (event: { target: { value: any; }; }) => {
         setDescription(event.target.value);
     };
 
-    const [image, setImage] = useState('');
+    const [image, setImage] = useState('https://res.cloudinary.com/dl0tawm7w/image/upload/v1670865178/comics/91fCA7sK8mL_h2rpcq.jpg');
     const handleChangeImage = (event: { target: { value: any; }; }) => {
         setImage(event.target.value);
     };
@@ -46,11 +47,13 @@ export function AddManga() {
     return(
         <>
             <Navbar/>
-
+            <p className="ml-4 text-2xl font-normal text-black">
+                <Link to="/comics">Comics</Link> / AddComics
+            </p>
             <div className="mt-10 sm:mt-0">
                 <div className="md:gap-6">
                     <div className="px-4 ">
-                        <h3 className="text-3xl mt-2 text-center font-medium leading-6 text-gray-900">Добавление новой манги</h3>
+                        <h3 className="text-3xl mt-2 text-center font-medium leading-6 text-gray-900">Добавить комикс</h3>
                     </div>
                     <div className="mt-5  md:mt-0">
                         <form>
@@ -115,11 +118,11 @@ export function AddManga() {
                                                 value={genre}
                                                 className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-base"
                                             >
-                                                <option>Сэнен</option>
-                                                <option>Приключение</option>
-                                                <option>Боевик</option>
-                                                <option>Боевик</option>
+                                                <option>Детектив</option>
+                                                <option>Ужасы</option>
                                                 <option>Романтика</option>
+                                                <option>Приключения</option>
+                                                <option>Научная фантастика</option>
                                             </select>
                                         </div>
 
@@ -165,7 +168,7 @@ export function AddManga() {
                                     </div>
                                 </div>
                                 <div className="bg-gray-50 px-4 py-3 text-center sm:px-6">
-                                    {AddingManga(name, rate, year, genre, price, episodes, description, image)}
+                                    {AddingComics(name, rate, year, genre, price, episodes, description, image)}
                                 </div>
                             </div>
                         </form>

@@ -1,17 +1,13 @@
-import {IManga} from "../models";
+import {IComics} from "../models";
 import {Link} from "react-router-dom";
 import {useContext, useState} from "react";
-import {MyContext} from "./MangaPage";
+import {MyContext} from "./ComicsPage";
 import {AddToCart} from "../requests/AddToCart";
 import {getRole, getToken} from "../modules";
-import {DeleteManga} from "../requests/DeleteManga";
+import {DeleteComics} from "../requests/DeleteComics";
 
 
-export interface MangaProps {
-    manga: IManga
-}
-
-export function Manga() {
+export function Comics() {
     const ctx = useContext(MyContext)
     let access_token = getToken()
     let showAddCartButton = true
@@ -31,21 +27,21 @@ export function Manga() {
         <div
             className="py-3 px-0 rounded flex flex-col justify-self-center items-center mb-2 place-content-start"
         >
-            <img src={`https://res.cloudinary.com/dsd9ne1xr/image/upload/${ctx.Image}/${ctx.UUID}.jpg`} className="w-1/2 sm:w-1/5" alt={ctx.Name}/>
+            <img src={ctx.Image} className="w-3/5 sm:w-2/5" alt={ctx.Name}/>
             <p>{ ctx.Name }</p>
             <p className="font-bold">{ctx.Price} рублей</p>
             <Link to={`${ctx.UUID}`}
                   className="w-30 sm:w-1/10 border-4 border-indigo-700 text-indigo-700 hover:bg-blue-700 hover:text-white py-1 sm:px-3 place-self-center rounded-full text-xl font-bold"
-                  state={{manga: ctx}}
+                  state={{comics: ctx}}
             >Подробнее
             </Link>
-            {showAddCartButton && <p className="mt-2 w-28 sm:w-1/10 border-4 border-indigo-700 text-indigo-700 hover:bg-blue-700 hover:text-white sm:px-3 place-content-between rounded-full text-xl font-bold">
+            {showAddCartButton && <p className="mt-2 border-4 border-indigo-700 text-indigo-700 hover:bg-blue-700 hover:text-white sm:px-3 place-content-between rounded-full text-xl font-bold">
                 {AddToCart(ctx.UUID)}
             </p>}
-            {showManagerButton && <p className="mt-2 w-28 sm:w-1/10 border-4 border-indigo-700 text-indigo-700 hover:bg-blue-700 hover:text-white sm:px-3 place-content-between rounded-full text-xl font-bold">
-                {DeleteManga(ctx.UUID)}
+            {showManagerButton && <p className="mt-2 border-4 border-indigo-700 text-indigo-700 hover:bg-blue-700 hover:text-white sm:px-3 place-content-between rounded-full text-xl font-bold">
+                {DeleteComics(ctx.UUID)}
             </p>}
-            {showManagerButton && <Link to="/change" className="mt-2 w-28 sm:w-1/10 border-4 border-indigo-700 text-indigo-700 hover:bg-blue-700 hover:text-white sm:px-3 place-content-between rounded-full text-xl font-bold"
+            {showManagerButton && <Link to="/change" className="mt-2 border-4 border-indigo-700 text-indigo-700 hover:bg-blue-700 hover:text-white sm:px-3 place-content-between rounded-full text-xl font-bold"
                                         state={{UUID: ctx.UUID, Name: ctx.Name, Rate: ctx.Rate, Year: ctx.Year, Genre: ctx.Genre, Price: ctx.Price, Episodes: ctx.Episodes, Description: ctx.Description, Image: ctx.Image}}
             >
                 Изменить

@@ -1,9 +1,9 @@
 import React, {useState} from "react"
 import {Navbar} from "./Navbar";
-import {ChangingManga} from "../requests/ChangeManga";
-import {useLocation} from "react-router-dom";
+import {ChangingComics} from "../requests/ChangeComics";
+import {Link, useLocation} from "react-router-dom";
 
-export function ChangeManga() {
+export function ChangeComics() {
     const [name, setName] = useState(useLocation().state.Name);
     const handleChangeName = (event: { target: { value: any; }; }) => {
         setName(event.target.value);
@@ -47,11 +47,13 @@ export function ChangeManga() {
     return(
         <>
             <Navbar/>
-
+            <p className="ml-4 text-2xl font-normal text-black">
+                <Link to="/comics">Comics</Link> / ChangeComics
+            </p>
             <div className="mt-10 sm:mt-0">
                 <div className="md:gap-6">
                     <div className="px-4 ">
-                        <h3 className="text-3xl mt-2 text-center font-medium leading-6 text-gray-900">Изменение манги</h3>
+                        <h3 className="text-3xl mt-2 text-center font-medium leading-6 text-gray-900">Измененить комикс</h3>
                     </div>
                     <div className="mt-5  md:mt-0">
                             <div className="overflow-hidden shadow sm:rounded-md">
@@ -165,7 +167,7 @@ export function ChangeManga() {
                                     </div>
                                 </div>
                                 <div className="bg-gray-50 px-4 py-3 text-center sm:px-6">
-                                    {ChangingManga(useLocation().state.UUID, name, rate, year, genre, price, episodes, description, image)}
+                                    {ChangingComics(useLocation().state.UUID, name, rate, year, genre, price, episodes, description, image)}
                                 </div>
                             </div>
                     </div>

@@ -1,12 +1,12 @@
-import {deleteManga} from "../modules";
+import {deleteComics} from "../modules";
 
 
-export function DeleteManga(uuid: string) {
+export function DeleteComics(uuid: string) {
 
-    const url = `manga`
+    const url = `comics`
 
     function Delete() {
-        deleteManga(url, uuid)
+        deleteComics(url, uuid)
     }
 
 

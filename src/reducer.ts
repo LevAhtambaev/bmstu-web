@@ -1,10 +1,10 @@
 export const success = "Successs"
 
-export function reducer(state : any, action: { type: any; mangas: any; }) {
+export function reducer(state : any, action: { type: any; comics: any; }) {
     switch (action.type) {
         case success:
             return {
-                mangas: action.mangas
+                comics: action.comics
             }
         default:
             return state

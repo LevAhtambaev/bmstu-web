@@ -1,17 +1,17 @@
 import {addOrder} from "../modules";
 
-export function AddOrder(mangas_uuid: string[]) {
+export function AddOrder(comics_uuid: string[]) {
 
     const url = `orders`
 
     function Add() {
-        addOrder(url, mangas_uuid)
+        addOrder(url, comics_uuid)
     }
 
 
     return (
         <>
-            <button className="rounded-full bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" onClick={() => Add()}>Приобрести</button>
+            <button className="mt-2 border-4 border-indigo-700 text-indigo-700 hover:bg-blue-700 hover:text-white sm:px-3 place-content-between rounded-full text-xl font-bold" onClick={() => Add()}>Приобрести</button>
         </>
     );
 

@@ -1,13 +1,13 @@
-import {addManga} from "../modules";
+import {addComics} from "../modules";
 import React from "react";
 
 
-export function AddingManga(name: string, rate: number, year: number, genre: string, price: number, episodes: number, description: string, image: string) {
+export function AddingComics(name: string, rate: number, year: number, genre: string, price: number, episodes: number, description: string, image: string) {
 
-    const url = `manga`
+    const url = `comics`
 
     function Add() {
-        addManga(url, name, rate, year, genre, price, episodes, description, image)
+        addComics(url, name, rate, year, genre, price, episodes, description, image)
     }
 
 

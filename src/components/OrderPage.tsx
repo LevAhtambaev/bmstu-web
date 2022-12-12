@@ -7,6 +7,7 @@ import {getToken} from "../modules";
 import axios from "axios";
 import {ENDPOINT} from "../App";
 import {reducer} from "../requests/GetOrders";
+import {Link} from "react-router-dom";
 
 
 export const MyContext = createContext(orders_context);
@@ -69,20 +70,27 @@ export function OrderPage() {
     return (
         <>
             <Navbar/>
-
             <div className="bg-gray-100 min-h-screen">
+                <p className="ml-4 text-2xl font-normal text-black">
+                    <Link to="/comics">Comics</Link> / Orders
+                </p>
                 <div className="w-1/2 mx-auto">
                     <div className="grid grid-rows-2 grid-cols-3 justify-items-center">
                         <div>
                             <label htmlFor="first-name" className="block text-lg text-center font-medium text-gray-700">
                                 Статус
                             </label>
-                            <input
-                                type="text"
+                            <select
                                 onChange={handleChangeStatus}
                                 value={status}
-                                className="mt-1 block w-64 rounded-md border-gray-300 shadow-sm focus:border-indigo-400 focus:ring-indigo-400 sm:text-base"
-                            />
+                                className="mt-1 block w-40 rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-500 focus:outline-none focus:ring-gray-500 sm:text-base"
+                            >
+                                <option>Все статусы</option>
+                                <option>Оформлен</option>
+                                <option>Оплачен</option>
+                                <option>Подтверждён</option>
+                                <option>Доставлен</option>
+                            </select>
                         </div>
                         <div>
                             <label htmlFor="first-name" className="block text-lg text-center font-medium text-gray-700">
@@ -93,7 +101,7 @@ export function OrderPage() {
                                 onChange={handleChangeStDate}
                                 value={stDate}
                                 maxLength={10}
-                                className="mt-1 block w-64 rounded-md border-gray-300 shadow-sm focus:border-indigo-400 focus:ring-indigo-400 sm:text-base"
+                                className="mt-1 block w-40 rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-500 focus:outline-none focus:ring-gray-500 sm:text-base"
                             />
                         </div>
                         <div>
@@ -105,7 +113,7 @@ export function OrderPage() {
                                 onChange={handleChangeEndDate}
                                 value={endDate}
                                 maxLength={10}
-                                className="mt-1 block w-64 rounded-md border-gray-300 shadow-sm focus:border-indigo-400 focus:ring-indigo-400 sm:text-base"
+                                className="mt-1 block w-40 rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-500 focus:outline-none focus:ring-gray-500 sm:text-base"
                             />
                         </div>
                         <button className="mt-5 col-span-3 border-2 border-slate-300 border-indigo-400 rounded-full" onClick={() => {setFilter(!filter)}}> {!filter && <p>Применить фильтр</p>}{filter && <p>Снять фильтр</p>} </button>
@@ -114,7 +122,7 @@ export function OrderPage() {
                 <div className="px-2 sm:px-0 pt-5 flex flex-col gap-0 mx-auto container">
                     <div className="border-2 border-slate-300 -mb-1 rounded py-2  grid grid-cols-4">
                         <p className="place-self-center text-lg font-bold">
-                            Манги
+                            Комиксы
                         </p>
                         <p className="place-self-center text-lg font-bold">
                             Покупатель

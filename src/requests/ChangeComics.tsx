@@ -1,13 +1,13 @@
-import {changeManga} from "../modules";
+import {changeComics} from "../modules";
 import React from "react";
 
 
-export function ChangingManga(uuid: string,name: string, rate: number, year: number, genre: string, price: number, episodes: number, description: string, image: string) {
+export function ChangingComics(uuid: string,name: string, rate: number, year: number, genre: string, price: number, episodes: number, description: string, image: string) {
 
-    const url = `manga`
+    const url = `comics`
 
     function Change() {
-        changeManga(uuid, url, name, rate, year, genre, price, episodes, description, image)
+        changeComics(uuid, url, name, rate, year, genre, price, episodes, description, image)
     }
 
 

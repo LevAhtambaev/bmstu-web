@@ -1,4 +1,4 @@
-export interface IManga {
+export interface IComics {
     UUID: string
     Name: string
     Rate: number
@@ -12,12 +12,12 @@ export interface IManga {
 
 export interface ICart {
     UUID: string
-    Manga: string
+    Comics: string
 }
 
 export interface IOrder {
     UUID: string
-    Mangas: string[]
+    Comics: string[]
     UserUUID: string
     Date: string
     Status: string

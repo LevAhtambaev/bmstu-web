@@ -1,42 +1,29 @@
-import {Manga} from "./Manga";
-import {Banner} from "./Banner";
-import {getJsonMangas} from "../modules";
+import {Comics} from "./Comics";
+import {getJsonAllComics} from "../modules";
 import React, {useEffect, useState, useReducer} from "react";
 import {createContext} from "react";
-import {IManga} from "../models";
+import {IComics} from "../models";
 import {reducer, success} from "../reducer";
-import {Filter} from "./Filter";
-import {GetMangas} from "../requests/GetMangas";
-import {manga_context} from "../context/context";
+import {GetAllComics} from "../requests/GetAllComics";
+import {comics_context} from "../context/context";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import {Navbar} from "./Navbar";
+import {Link, useLocation} from "react-router-dom";
 
 
-export const MyContext = createContext(manga_context);
-const initialState = {mangas: []}
+export const MyContext = createContext(comics_context);
 
-export function MangaPage() {
-    const [state, dispatch] = useReducer(reducer, initialState)
-
-
-    const url = `manga`
-
-    useEffect(() => {
-        getJsonMangas(url).then((result) => {
-            dispatch({type: success, mangas: result})
-        })
-    }, [url])
-
-    const mangas = GetMangas()
-
+export function ComicsPage() {
+    const comics = GetAllComics()
+    console.log(comics)
     const [name, setName] = useState('')
 
-    const filteredMangas= mangas.filter((manga: { Name: string }) => {
-        return manga.Name.toLowerCase().includes(name.toLowerCase())
+    const filteredComics= comics.filter((comics: { Name: string }) => {
+        return comics.Name.toLowerCase().includes(name.toLowerCase())
     })
 
-    const [price, setPrice] = useState<number[]>([0,2000]);
+    const [price, setPrice] = useState<number[]>([0,5000]);
 
     const minDistance = 100;
 
@@ -58,16 +45,24 @@ export function MangaPage() {
             label: '0 Р',
         },
         {
-            value: 500,
-            label: '500 Р',
-        },
-        {
             value: 1000,
             label: '1000 Р',
         },
         {
-            value: 20000,
+            value: 2000,
             label: '2000 Р',
+        },
+        {
+            value: 3000,
+            label: '3000 Р',
+        },
+        {
+            value: 4000,
+            label: '4000 Р',
+        },
+        {
+            value: 5000,
+            label: '5000 Р',
         },
     ];
 
@@ -78,8 +73,10 @@ export function MangaPage() {
     return (
         <>
             <Navbar/>
-            <Banner/>
-            <div className="flex pt-5 sm:pt-32 place-content-center">
+            <p className="ml-4 text-2xl font-normal text-black">
+                <Link to="/comics">Comics</Link>
+            </p>
+            <div className="flex pt-5 sm:pt-5 place-content-center">
                 <form>
                     <input
                         type="text"
@@ -89,7 +86,7 @@ export function MangaPage() {
                     />
                 </form>
             </div>
-            <div className="flex pt-5 sm:pt-32 place-content-center">
+            <div className="flex pt-5 sm:pt-5 place-content-center">
                 <Box sx={{ width: 300 }}>
                     <Slider
                         getAriaLabel={() => 'Price filter'}
@@ -101,15 +98,15 @@ export function MangaPage() {
                         disableSwap
                         step={100}
                         min={0}
-                        max={2000}
+                        max={5000}
                     />
                 </Box>
             </div>
-            <div className="container grid grid-cols-2 sm:grid-cols-3 gap-2">
-                {filteredMangas.filter((manga: { Price: number; }) => manga.Price >= price[0] && manga.Price <= price[1]).map((manga: IManga)=> {
+            <div className="container mt-6 grid grid-cols-2 sm:grid-cols-3 gap-2 mx-auto">
+                {filteredComics.filter((comics: { Price: number; }) => comics.Price >= price[0] && comics.Price <= price[1]).map((comics: IComics, key: any)=> {
                     return (
-                        <MyContext.Provider value={manga}>
-                            <Manga/>
+                        <MyContext.Provider value={comics} key={key}>
+                            <Comics/>
                         </MyContext.Provider>
                     )
                 })}

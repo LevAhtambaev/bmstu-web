@@ -1,16 +1,16 @@
 import {ENDPOINT} from "./App";
-import {IManga, ICart} from "./models";
+import {IComics} from "./models";
 import axios from "axios";
 
 
 
-export const getJsonMangas = async (url: string) => {
-    const res = await fetch(`${ENDPOINT}/${url}`).then((r) => r.json() as Promise<IManga[]>)
+export const getJsonAllComics = async (url: string) => {
+    const res = await fetch(`${ENDPOINT}/${url}`).then((r) => r.json() as Promise<IComics[]>)
     return res
 }
 
-export const getJsonManga = async (url: string) => {
-    const res = await fetch(`${ENDPOINT}/${url}`).then((r) => r.json() as Promise<IManga>)
+export const getJsonComics = async (url: string) => {
+    const res = await fetch(`${ENDPOINT}/${url}`).then((r) => r.json() as Promise<IComics>)
     return res
 }
 
@@ -57,7 +57,7 @@ export const deleteCart = async (url: string) => {
 }
 
 export const addToCart = async (url: string, uuid: string) => {
-    const body = {Manga: uuid}
+    const body = {Comics: uuid}
     let access_token = getToken()
     return  axios.post(`${ENDPOINT}/${url}`, body, {withCredentials: true, headers: {
             "Authorization": `Bearer ${access_token}`
@@ -66,7 +66,7 @@ export const addToCart = async (url: string, uuid: string) => {
     })
 }
 
-export function addManga(url: string, name: string, rate: number, year: number, genre: string, price: number, episodes: number, description: string, image: string) {
+export function addComics(url: string, name: string, rate: number, year: number, genre: string, price: number, episodes: number, description: string, image: string) {
     const body = {
         Name: name,
         Rate: rate,
@@ -88,7 +88,7 @@ export function addManga(url: string, name: string, rate: number, year: number, 
     })
 }
 
-export function changeManga(uuid:string, url: string, name: string, rate: number, year: number, genre: string, price: number, episodes: number, description: string, image: string) {
+export function changeComics(uuid:string, url: string, name: string, rate: number, year: number, genre: string, price: number, episodes: number, description: string, image: string) {
     const body = {
         Name: name,
         Rate: rate,
@@ -110,15 +110,15 @@ export function changeManga(uuid:string, url: string, name: string, rate: number
     })
 }
 
-export function deleteManga (url: string, uuid: string) {
+export function deleteComics (url: string, uuid: string) {
     let access_token = getToken()
     return axios.delete(`${ENDPOINT}/${url}/${uuid}`, {withCredentials: true, headers: {
             "Authorization": `Bearer ${access_token}`
         }}).then(r => r.data)
 }
 
-export function addOrder (url: string, mangas_uuid: string[])  {
-    const body = { Mangas: mangas_uuid }
+export function addOrder (url: string, comics_uuid: string[])  {
+    const body = { Comics: comics_uuid }
     let access_token = getToken()
     return  axios.post(`${ENDPOINT}/${url}`, body, {withCredentials: true, headers: {
             "Authorization": `Bearer ${access_token}`
@@ -148,7 +148,7 @@ export function loginUser (url: string, name: string, pass: string)  {
     const body = { login: name, password: pass }
     return axios.post(`${ENDPOINT}/${url}`, body, {withCredentials: true}).then(function (response) {
         console.log(response)
-        window.location.replace("/manga")
+        window.location.replace("/comics")
     }).catch(function (reason) {
         window.location.replace("/login")
     })
@@ -160,7 +160,7 @@ export function logoutUser (url: string) {
             "Authorization": `Bearer ${access_token}`
         }}).then(function (r) {
             console.log(r.data)
-        window.location.replace("/manga")
+        window.location.replace("/comics")
     })
 }
 

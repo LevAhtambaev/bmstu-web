@@ -8,7 +8,7 @@ import {getToken, updateStatus} from "../modules";
 export function Order() {
     const ctx = useContext(MyContext)
     let isList = true
-    if (ctx.Mangas.length === 1) {
+    if (ctx.Comics.length === 1) {
         isList = false
     }
     let access_token = getToken()
@@ -21,11 +21,11 @@ export function Order() {
     return (
         <div className="border-2 border-slate-300 -mb-1 rounded py-2  grid grid-cols-4 ">
             <div className="place-self-center">
-                {isList && ctx.Mangas.map((manga, key) => {
-                    return <p className="pl-2 text-center text-lg" key={key}>{key+1}) {manga}</p>
+                {isList && ctx.Comics.map((comics, key) => {
+                    return <p className="pl-2 text-center text-lg" key={key}>{key+1}) {comics}</p>
                 })}
-                {!isList && ctx.Mangas.map((manga, key) => {
-                    return <p className="pl-2 text-center text-lg" key={key}>{manga}</p>
+                {!isList && ctx.Comics.map((comics, key) => {
+                    return <p className="pl-2 text-center text-lg" key={key}>{comics}</p>
                 })}
             </div>
 
