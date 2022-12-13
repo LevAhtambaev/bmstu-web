@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/bmstu-web/static/css/main.4610e90d.css",
+    "main.js": "/bmstu-web/static/js/main.3fe7813b.js",
+    "index.html": "/bmstu-web/index.html",
+    "main.4610e90d.css.map": "/bmstu-web/static/css/main.4610e90d.css.map",
+    "main.3fe7813b.js.map": "/bmstu-web/static/js/main.3fe7813b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4610e90d.css",
+    "static/js/main.3fe7813b.js"
+  ]
+}
